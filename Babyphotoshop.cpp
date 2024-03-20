@@ -19,7 +19,10 @@ Image filter1(Image image){
         }
         }
     }
-    return image;
+    cout << "Pls enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga:";
+    cin >> image_name;
+    image.saveImage(image_name);
 }
 Image filter2(Image image){
 
@@ -73,10 +76,6 @@ int main(){
                 cout << "Please enter a valid choice ( A , B , C , D , E )\n";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');}
         }
-        cout << "Pls enter image name to store new image\n";
-        cout << "and specify extension .jpg, .bmp, .png, .tga:";
-        cin >> image_name;
-        image.saveImage(image_name);
     }
 
 }
