@@ -3,12 +3,10 @@
 
 using namespace std;
 
-Image filter1(Image image){
-    string image_name;
+void filter1(Image &image){
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             unsigned  int average = 0;
-
             for (int k = 0; k < 3; k++) {
                 average += image(i, j, k);
             }
@@ -18,10 +16,6 @@ Image filter1(Image image){
         }
         }
     }
-    cout << "Pls enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga:";
-    cin >> image_name;
-    image.saveImage(image_name);
 }
 Image filter2(Image image){
 
@@ -63,7 +57,7 @@ Image filter7(Image image){
     cin >> choice;
     choice = toupper(choice);
     while(choice != 'A' && choice != 'B'){
-        cout << "Enter a valid choice ( A , B , C , D , E )\n";
+        cout << "Enter a valid choice ( A , B )\n";
         cin >> choice;
         choice = toupper(choice);
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -92,15 +86,49 @@ Image filter7(Image image){
         cout << "and specify extension .jpg, .bmp, .png, .tga:";
         cin >> image_name;
         image.saveImage(image_name);}
-    }
+}
 Image filter8(Image image){
 
 }
 Image filter9(Image image){
 
 }
-Image filter10(Image image){
+Image filter10(Image &image){
+    Image image1(image.width,image.height);
+    int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
+    int kernelY[3][3] = { {-1, -1, -1}, {0, 0, 0}, {1, 1, 1} };
 
+    for (int i = 1; i < image.height - 1; i++) {
+        for (int j = 1; j < image.width - 1; j++) {
+            int gx = 0, gy = 0;
+
+            // Apply Prewitt operator for x and y directions
+            for (int ky = 0; ky < 3; ky++) {
+                for (int kx = 0; kx < 3; kx++) {
+                    gx += kernelX[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
+                    gy += kernelY[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
+            }
+
+            // Compute gradient magnitude
+            int magnitude = std::sqrt(gx * gx + gy * gy);
+            if (magnitude > 150) {
+                for (int k = 0; k < 3; k++){
+                image1(i, j, k) = 0;
+                }
+            }
+            else {
+                for (int k = 0; k < 3; k++) {
+                    image1(i, j, k) = 255;
+                }
+            }
+        }
+    }}
+    image = image1;
+    string image_name;
+    cout << "Pls enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga:";
+    cin >> image_name;
+    image.saveImage(image_name);
 }
 int main(){
     char choice;
@@ -114,8 +142,9 @@ int main(){
         cout << "Enter your choice:";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E'){
-            cout << "Enter a valid choice ( A , B , C , D , E)\n";
+        while(choice != 'A' && choice != 'D' && choice != 'G' && choice != 'H' && choice != 'Z'){
+            cout << "Enter a valid choice ( A , D , G , H , Z)\n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -129,22 +158,28 @@ int main(){
         cin >> image_name;
         Image image(image_name);
         switch (choice) {
-            case 'A':{
-                image = filter1(image);
-            }
-            case 'D': {
-                filter4(image);
-            }
-            case 'G': {
-                filter7(image);
-            }
-            case 'J': {
+            case 'A':
+                filter1(image);
+                break;
+            case 'D':
+                image = filter4(image);
+                break;
+            case 'G':
+                image = filter7(image);
+                break;
+            case 'H':
+                filter1(image);
                 filter10(image);
-            }
-            default: {
-                cout << "Please enter a valid choice ( A , B , C , D , E )\n";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');}
+                break;
+            default:
+                cout << "Please enter a valid choice ( A , D , G , H , Z )\n";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                break;
         }
+        cout << "Pls enter image name to store new image\n";
+        cout << "and specify extension .jpg, .bmp, .png, .tga:";
+        cin >> image_name;
+        image.saveImage(image_name);
     }
 
 }
