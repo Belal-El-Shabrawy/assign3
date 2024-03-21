@@ -63,8 +63,51 @@ Image filter4(Image image){
     cin >> image_name;
     image.saveImage(image_name);
 }
-Image filter5(Image image){
-
+void filter5(Image &image){
+    cout<<"A) Flip vertically"<<endl;
+    cout<<"B) Flip horizontally"<<endl;
+    string choice;
+    while(true)
+    {
+        cin>>choice;
+        choice[0]=toupper(choice[0]);
+        if(choice == "A" || choice == "B")
+            break;
+        else
+            cout<<"Please enter valid input"<<endl;
+    }
+    if(choice == "A")
+    {
+        int temporary;
+        for(int i = 0;i<image.width;i++)
+        {
+            for(int j = 0;j<image.height/2;j++)
+            {
+                for(int k = 0; k < 3; k++)
+                {
+                    temporary=image(i,j,k);
+                    image(i,j,k) = image(i,image.height-j,k);
+                    image(i,image.height-j,k)=temporary;
+                }
+            }
+        }
+    }
+    else if(choice == "B")
+    {
+        int temporary;
+        for(int i = 0;i<image.width/2;i++)
+        {
+            for(int j = 0;j<image.height;j++)
+            {
+                for(int k = 0; k < 3; k++)
+                {
+                    temporary=image(i,j,k);
+                    image(i,j,k) = image(image.width-i,j,k);
+                    image(image.width-i,j,k)=temporary;
+                }
+            }
+        }
+    }
 }
 Image filter6(Image image){
 
@@ -153,14 +196,15 @@ int main(){
         cout << "A) Grey scale filter\n";
         cout << "B) Black and White\n";
         cout << "D) Merge Images\n";
+        cout << "E) Flip Image\n";
         cout << "G) Darken and Lighten Images\n";
         cout << "H) Detect Image edges\n";
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'G' && choice != 'H' && choice != 'Z'){
-            cout << "Enter a valid choice ( A , B, D , G , H , Z)\n";
+        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'H' && choice != 'Z'){
+            cout << "Enter a valid choice ( A , B, D, E , G , H , Z)\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
@@ -183,6 +227,9 @@ int main(){
                 break;
             case 'D':
                 image = filter4(image);
+                break;
+            case 'E':
+                filter5(image);
                 break;
             case 'G':
                 image = filter7(image);
