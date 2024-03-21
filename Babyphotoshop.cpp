@@ -101,15 +101,11 @@ Image filter10(Image &image){
     for (int i = 1; i < image.height - 1; i++) {
         for (int j = 1; j < image.width - 1; j++) {
             int gx = 0, gy = 0;
-
-            // Apply Prewitt operator for x and y directions
             for (int ky = 0; ky < 3; ky++) {
                 for (int kx = 0; kx < 3; kx++) {
                     gx += kernelX[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
                     gy += kernelY[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
             }
-
-            // Compute gradient magnitude
             int magnitude = std::sqrt(gx * gx + gy * gy);
             if (magnitude > 150) {
                 for (int k = 0; k < 3; k++){
