@@ -112,43 +112,42 @@ void filter5(Image &image){
 Image filter6(Image image){
 
 }
-Image filter7(Image image){
+void filter7(Image &image){
     char choice;
-    cout << "A) Darken Image\n";
-    cout << "B) Lighten Image\n";
+    cout << "A) Lighten Image\n";
+    cout << "B) Darken Image\n";
     cout << "Enter your choice:";
     cin >> choice;
     choice = toupper(choice);
     while(choice != 'A' && choice != 'B'){
         cout << "Enter a valid choice ( A , B )\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> choice;
         choice = toupper(choice);
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     if(choice == 'A'){
-    string image_name;
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             for (int k = 0; k < 3; k++) {
-                image(i, j, k) = (image(i, j, k))/2;}
+                int newValue = static_cast<int>(image.getPixel(i, j, k) * 1.5);
+                newValue = std::max(0, std::min(255, newValue));
+                image.setPixel(i, j, k, newValue);
+            }
         }
     }
-    cout << "Please enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-    cin >> image_name;
-    image.saveImage(image_name);}
+}
     else if (choice == 'B'){
-        string image_name;
         for (int i = 0; i < image.width; i++) {
             for (int j = 0; j < image.height; j++) {
                 for (int k = 0; k < 3; k++) {
-                    image(i, j, k) = (image(i, j, k))*2;}
+                    int newValue = static_cast<int>(image.getPixel(i, j, k) * 0.5);
+                    newValue = std::max(0, std::min(255, newValue));
+                    image.setPixel(i, j, k, newValue);
+                }
             }
         }
-        cout << "Please enter image name to store new image\n";
-        cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-        cin >> image_name;
-        image.saveImage(image_name);}
+    }
 }
 Image filter8(Image image){
 
@@ -232,7 +231,7 @@ int main(){
                 filter5(image);
                 break;
             case 'G':
-                image = filter7(image);
+                filter7(image);
                 break;
             case 'H':
                 filter1(image);
@@ -248,5 +247,4 @@ int main(){
         cin >> image_name;
         image.saveImage(image_name);
     }
-
 }
