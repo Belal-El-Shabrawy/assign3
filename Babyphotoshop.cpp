@@ -138,7 +138,7 @@ int main(){
         cout << "Enter your choice:";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'D' && choice != 'G' && choice != 'H' && choice != 'Z'){
+        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'G' && choice != 'H' && choice != 'Z'){
             cout << "Enter a valid choice ( A , D , G , H , Z)\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
@@ -156,6 +156,9 @@ int main(){
         switch (choice) {
             case 'A':
                 filter1(image);
+                break;
+            case 'B':
+                filter2(image);
                 break;
             case 'D':
                 image = filter4(image);
