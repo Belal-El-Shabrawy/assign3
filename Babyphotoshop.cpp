@@ -17,8 +17,28 @@ void filter1(Image &image){
         }
     }
 }
-Image filter2(Image image){
-
+void filter2(Image &image){
+    filter1(image);
+    for(int i = 0;i<image.width;i++)
+    {
+        for(int j = 0;j<image.height;j++)
+        {
+            if(image(i,j,0)<= 127)
+            {
+                for(int k = 0; k < 3; k++)
+                {
+                    image(i,j,k)=0;
+                }
+            }
+            else
+            {
+                for(int k = 0; k < 3; k++)
+                {
+                    image(i,j,k)=255;
+                }
+            }
+        }
+    }
 }
 Image filter3(Image image){
 
@@ -26,7 +46,7 @@ Image filter3(Image image){
 Image filter4(Image image){
     string image_name;
     string image_name2;
-    cout << "Please Enter Name of the second Image to merge with the first image:";
+    cout << "Please Enter Name of the second Image to merge with the first image: ";
     cin >> image_name2;
     Image image2(image_name2);
     for (int i = 0; i < image.width; i++) {
@@ -70,8 +90,8 @@ Image filter7(Image image){
                 image(i, j, k) = (image(i, j, k))/2;}
         }
     }
-    cout << "Pls enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga:";
+    cout << "Please enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
     cin >> image_name;
     image.saveImage(image_name);}
     else if (choice == 'B'){
@@ -82,8 +102,8 @@ Image filter7(Image image){
                     image(i, j, k) = (image(i, j, k))*2;}
             }
         }
-        cout << "Pls enter image name to store new image\n";
-        cout << "and specify extension .jpg, .bmp, .png, .tga:";
+        cout << "Please enter image name to store new image\n";
+        cout << "and specify extension .jpg, .bmp, .png, .tga: ";
         cin >> image_name;
         image.saveImage(image_name);}
 }
@@ -121,8 +141,8 @@ Image filter10(Image &image){
     }}
     image = image1;
     string image_name;
-    cout << "Pls enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga:";
+    cout << "Please enter image name to store new image\n";
+    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
     cin >> image_name;
     image.saveImage(image_name);
 }
@@ -131,15 +151,16 @@ int main(){
     while (true) {
         cout << "\n|**Welcome Baby Photoshop app**|\n";
         cout << "A) Grey scale filter\n";
+        cout << "B) Black and White\n";
         cout << "D) Merge Images\n";
         cout << "G) Darken and Lighten Images\n";
         cout << "H) Detect Image edges\n";
         cout << "Z) End\n";
-        cout << "Enter your choice:";
+        cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
         while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'G' && choice != 'H' && choice != 'Z'){
-            cout << "Enter a valid choice ( A , D , G , H , Z)\n";
+            cout << "Enter a valid choice ( A , B, D , G , H , Z)\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
@@ -171,12 +192,12 @@ int main(){
                 filter10(image);
                 break;
             default:
-                cout << "Please enter a valid choice ( A , D , G , H , Z )\n";
+                cout << "Please enter a valid choice ( A , B , D , G , H , Z )\n";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 break;
         }
-        cout << "Pls enter image name to store new image\n";
-        cout << "and specify extension .jpg, .bmp, .png, .tga:";
+        cout << "Please enter image name to store new image\n";
+        cout << "and specify extension .jpg, .bmp, .png, .tga: ";
         cin >> image_name;
         image.saveImage(image_name);
     }
