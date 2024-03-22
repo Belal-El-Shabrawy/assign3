@@ -159,9 +159,9 @@ Image filter10(Image &image){
     Image image1(image.width,image.height);
     int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -1, -1}, {0, 0, 0}, {1, 1, 1} };
-
-    for (int i = 1; i < image.height - 1; i++) {
-        for (int j = 1; j < image.width - 1; j++) {
+    int min = std::min(image.width, image.height);
+    for (int i = 1; i < min - 1; i++) {
+        for (int j = 1; j < min - 1; j++) {
             int gx = 0, gy = 0;
             for (int ky = 0; ky < 3; ky++) {
                 for (int kx = 0; kx < 3; kx++) {
