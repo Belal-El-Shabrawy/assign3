@@ -43,7 +43,7 @@ void filter2(Image &image){
 Image filter3(Image image){
 
 }
-Image filter4(Image image){
+void filter4(Image &image){
     string image_name;
     string image_name2;
     cout << "Please Enter Name of the second Image to merge with the first image: ";
@@ -58,10 +58,6 @@ Image filter4(Image image){
             }
         }
     }
-    cout << "Pls enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga:";
-    cin >> image_name;
-    image.saveImage(image_name);
 }
 void filter5(Image &image){
     cout<<"A) Flip vertically"<<endl;
@@ -155,38 +151,68 @@ Image filter8(Image image){
 Image filter9(Image image){
 
 }
-Image filter10(Image &image){
-    Image image1(image.width,image.height);
+void filter10(Image &image , Image &image1){
     int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -1, -1}, {0, 0, 0}, {1, 1, 1} };
-
-    for (int i = 1; i < image.height - 1; i++) {
-        for (int j = 1; j < image.width - 1; j++) {
+    for (int i = 1; i < image.width - 1; i++) {
+        for (int j = 1; j < image.height - 1; j++) {
             int gx = 0, gy = 0;
             for (int ky = 0; ky < 3; ky++) {
                 for (int kx = 0; kx < 3; kx++) {
-                    gx += kernelX[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
-                    gy += kernelY[ky][kx] * (image(i + kx - 1, j + ky - 1, 0) + image(i + kx - 1, j + ky - 1, 1) + image(i + kx - 1, j + ky - 1, 2));
+                    gx += kernelX[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
+                    gy += kernelY[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
             }
             int magnitude = std::sqrt(gx * gx + gy * gy);
-            if (magnitude > 150) {
+            if (magnitude > 200) {
                 for (int k = 0; k < 3; k++){
-                image1(i, j, k) = 0;
+                image(i, j, k) = 0;
                 }
             }
             else {
                 for (int k = 0; k < 3; k++) {
-                    image1(i, j, k) = 255;
+                    image(i, j, k) = 255;
                 }
             }
         }
     }}
-    image = image1;
-    string image_name;
-    cout << "Please enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-    cin >> image_name;
-    image.saveImage(image_name);
+}
+void filter11(Image &image)
+{
+    double scale;
+    int width,height;
+    string choice;
+    cout<<"A) Enter scale"<<endl;
+    cout<<"B) Enter width and height"<<endl;
+    cin>>choice;
+    while(choice!="A"&&choice!="B")
+    {
+        cout<<"Please enter valid choice: ";
+        cin>>choice;
+    }
+    if(choice=="A")
+    {
+        cout<<"Enter scale in percentage: ";
+        cin>>scale;
+        while(scale<=0)
+        {
+            cout<<"Please enter valid number"<<endl;
+            cin>>scale;
+        }
+        image.width=round((scale/100)*image.width);
+        image.height=round((scale/100)*image.height);
+    }
+    if(choice=="B")
+    {
+        cout<<"Enter width and height respectively: ";
+        cin>>width>>height;
+        while(width<=0||height<=0)
+        {
+            cout<<"Please enter valid number"<<endl;
+            cin>>width>>height;
+        }
+        image.width=width;
+        image.height=height;
+    }
 }
 void filter11(Image &image)
 {
@@ -264,7 +290,7 @@ int main(){
                 filter2(image);
                 break;
             case 'D':
-                image = filter4(image);
+                filter4(image);
                 break;
             case 'E':
                 filter5(image);
