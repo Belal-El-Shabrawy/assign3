@@ -12,8 +12,8 @@ void filter1(Image &image){
             }
             average /= 3;
             for (int k = 0; k < 3; k++){
-                    image(i, j, k) = average;
-        }
+                image(i, j, k) = average;
+            }
         }
     }
 }
@@ -123,16 +123,16 @@ void filter7(Image &image){
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     if(choice == 'A'){
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            for (int k = 0; k < 3; k++) {
-                int newValue = static_cast<int>(image.getPixel(i, j, k) * 1.5);
-                newValue = std::max(0, std::min(255, newValue));
-                image.setPixel(i, j, k, newValue);
+        for (int i = 0; i < image.width; i++) {
+            for (int j = 0; j < image.height; j++) {
+                for (int k = 0; k < 3; k++) {
+                    int newValue = static_cast<int>(image.getPixel(i, j, k) * 1.5);
+                    newValue = std::max(0, std::min(255, newValue));
+                    image.setPixel(i, j, k, newValue);
+                }
             }
         }
     }
-}
     else if (choice == 'B'){
         for (int i = 0; i < image.width; i++) {
             for (int j = 0; j < image.height; j++) {
@@ -162,20 +162,20 @@ void filter10(Image &image ,string &image_name){
                 for (int kx = 0; kx < 3; kx++) {
                     gx += kernelX[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
                     gy += kernelY[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
-            }
-            int magnitude = std::sqrt(gx * gx + gy * gy);
-            if (magnitude > 200) {
-                for (int k = 0; k < 3; k++){
-                image(i, j, k) = 0;
+                }
+                int magnitude = std::sqrt(gx * gx + gy * gy);
+                if (magnitude > 200) {
+                    for (int k = 0; k < 3; k++){
+                        image(i, j, k) = 0;
+                    }
+                }
+                else {
+                    for (int k = 0; k < 3; k++) {
+                        image(i, j, k) = 255;
+                    }
                 }
             }
-            else {
-                for (int k = 0; k < 3; k++) {
-                    image(i, j, k) = 255;
-                }
-            }
-        }
-    }}
+        }}
 }
 void filter11(){
 
