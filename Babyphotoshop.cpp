@@ -188,6 +188,44 @@ Image filter10(Image &image){
     cin >> image_name;
     image.saveImage(image_name);
 }
+void filter11(Image &image)
+{
+    double scale;
+    int width,height;
+    string choice;
+    cout<<"A) Enter scale"<<endl;
+    cout<<"B) Enter width and height"<<endl;
+    cin>>choice;
+    while(choice!="A"&&choice!="B")
+    {
+        cout<<"Please enter valid choice: ";
+        cin>>choice;
+    }
+    if(choice=="A")
+    {
+        cout<<"Enter scale in percentage: ";
+        cin>>scale;
+        while(scale<=0)
+        {
+            cout<<"Please enter valid number"<<endl;
+            cin>>scale;
+        }
+        image.width=round((scale/100)*image.width);
+        image.height=round((scale/100)*image.height);
+    }
+    if(choice=="B")
+    {
+        cout<<"Enter width and height respectively: ";
+        cin>>width>>height;
+        while(width<=0||height<=0)
+        {
+            cout<<"Please enter valid number"<<endl;
+            cin>>width>>height;
+        }
+        image.width=width;
+        image.height=height;
+    }
+}
 int main(){
     char choice;
     while (true) {
@@ -198,12 +236,13 @@ int main(){
         cout << "E) Flip Image\n";
         cout << "G) Darken and Lighten Images\n";
         cout << "H) Detect Image edges\n";
+        cout << "K) Resize image\n";
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'H' && choice != 'Z'){
-            cout << "Enter a valid choice ( A , B, D, E , G , H , Z)\n";
+        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'H' && choice != 'K' && choice != 'Z'){
+            cout << "Enter a valid choice ( A , B, D , E , G , H , K , Z)\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
@@ -237,8 +276,11 @@ int main(){
                 filter1(image);
                 filter10(image);
                 break;
+            case 'K':
+                filter11(image);
+                break;
             default:
-                cout << "Please enter a valid choice ( A , B , D , G , H , Z )\n";
+                cout << "Please enter a valid choice ( A , B , E , D , G , H , K , Z )\n";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 break;
         }
