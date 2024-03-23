@@ -151,7 +151,8 @@ Image filter8(Image image){
 Image filter9(Image image){
 
 }
-void filter10(Image &image , Image &image1){
+void filter10(Image &image ,string &image_name){
+    Image image1(image_name);
     int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -1, -1}, {0, 0, 0}, {1, 1, 1} };
     for (int i = 1; i < image.width - 1; i++) {
@@ -176,6 +177,22 @@ void filter10(Image &image , Image &image1){
         }
     }}
 }
+void filter11(){
+
+}
+void filter12(){
+
+}
+void filter13(Image &image) {
+    double sunshine = 0.25;
+    for (int y = 0; y < image.height; ++y) {
+        for (int x = 0; x < image.width; ++x) {
+            image(x, y, 0) = floor(image(x, y, 0) + sunshine * (255 - image(x, y, 0)));
+            image(x, y, 1) = floor(image(x, y, 1) + sunshine * (255 - image(x, y, 1)) * 0.5);
+            image(x, y, 2) = floor(image(x, y, 2) - sunshine * image(x, y, 2));
+        }
+    }
+}
 int main(){
     char choice;
     while (true) {
@@ -185,13 +202,14 @@ int main(){
         cout << "D) Merge Images\n";
         cout << "E) Flip Image\n";
         cout << "G) Darken and Lighten Images\n";
-        cout << "H) Detect Image edges\n";
+        cout << "J) Detect Image edges\n";
+        cout << "N) Sunlight Effect\n";
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'H' && choice != 'Z'){
-            cout << "Enter a valid choice ( A , B, D, E , G , H , Z)\n";
+        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'J' && choice != 'N' && choice != 'Z'){
+            cout << "Enter a valid choice ( A , B , D , E , G , J , N , Z)\n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
@@ -203,7 +221,8 @@ int main(){
         }
         string image_name;
         cout << "Please Enter Name of the Image which you want to apply a filter on:";
-        cin >> image_name;
+        cin.ignore();
+        getline(cin, image_name);
         Image image(image_name);
         switch (choice) {
             case 'A':
@@ -212,27 +231,39 @@ int main(){
             case 'B':
                 filter2(image);
                 break;
+            case 'C':
+                filter3(image);
             case 'D':
                 filter4(image);
                 break;
             case 'E':
                 filter5(image);
                 break;
+            case 'F':
+                filter6(image);
             case 'G':
                 filter7(image);
                 break;
-            case 'H':{
-                Image image1(image_name);
-                filter10(image, image1);
-                break;}
-            default:
-                cout << "Please enter a valid choice ( A , B , D , G , H , Z )\n";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            case 'H':
+                filter8(image);
                 break;
+            case 'I':
+                filter9(image);
+                break;
+            case 'J':
+                filter10(image, image_name);
+                break;
+            case 'L':
+                filter11();
+            case 'M':
+                filter12();
+            case 'N':
+                filter13(image);
+
         }
         cout << "Please enter image name to store new image\n";
         cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-        cin >> image_name;
+        getline(cin, image_name);
         image.saveImage(image_name);
     }
 }
