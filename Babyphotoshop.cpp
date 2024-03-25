@@ -229,7 +229,7 @@ Image filter8(Image &image){
 }
 void filter9(Image &image){
         for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < 40; ++j) {
+        for (int j = 0; j < 30; ++j) {
              // Initialize average value
             image(i, j, 0) = 2;
             image(i, j, 1) = 2;
@@ -237,30 +237,30 @@ void filter9(Image &image){
 
         }
     }
-    for (int i = 0; i < 40; ++i) {
+    for (int i = 0; i < 30; ++i) {
         for (int j = 0; j < image.height; ++j) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
-    for (int i = image.width; i >image.width-40 ; i--) {
+    for (int i = image.width; i >image.width-30 ; i--) {
         for (int j = 0; j < image.height; j++) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
-    for (int j = image.height-1; j > image.height-40; j--) {
+    for (int j = image.height-1; j > image.height-30; j--) {
         for (int i = 0; i <image.width ; i++) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
@@ -296,34 +296,37 @@ void filter10(Image &image ,string &image_name){
 void filter11(){
 
 }
-void filter12(Image &image) {
 
-    int width = image.width - (image.width % 3);
-    int height = image.height - (image.height % 3);
-    for (int i = 0; i < width; i += 3) {
-        for (int j = 0; j < height; j += 3) {
-            unsigned int total_red = 0, total_green = 0, total_blue = 0;
-            for (int k = 0; k < 3; ++k) {
-                for (int l = 0; l < 3; ++l) {
-                    total_red += image(i + k, j + l, 0);
-                    total_green += image(i + k, j + l, 1);
-                    total_blue += image(i + k, j + l, 2);
-                }
+void filter12(Image &image,double sigma) {
+
+    int width = image.width;
+    int height = image.height;
+
+for(int i = 1; i < width - 1; ++i) {
+    for(int j = 1; j < height - 1; ++j) {
+        unsigned int total_red = 0, total_green = 0, total_blue = 0;
+        for(int k = -1; k <= 1; ++k) {
+            for(int l = -1; l <= 1; ++l) {
+                total_red += image(i + k, j + l, 0);
+                total_green += image(i + k, j + l, 1);
+                total_blue += image(i + k, j + l, 2);
             }
-            // Compute the average color
-            total_red /= 9;
-            total_green /= 9;
-            total_blue /= 9;
-            // Assign the averaged values back to the image
-            for (int k = 0; k < 3; ++k) {
-                for (int l = 0; l < 3; ++l) {
-                    image(i + k, j + l, 0) = total_red;
-                    image(i + k, j + l, 1) = total_green;
-                    image(i + k, j + l, 2) = total_blue;
-                }
+        }
+        // Compute the average color
+        total_red = round((float)total_red / 9.0);
+        total_green = round((float)total_green / 9.0);
+        total_blue = round((float)total_blue / 9.0);
+        // Assign the averaged values back to the image
+        for(int k = -1; k <= 1; ++k) {
+            for(int l = -1; l <= 1; ++l) {
+                image(i + k, j + l, 0) = total_red;
+                image(i + k, j + l, 1) = total_green;
+                image(i + k, j + l, 2) = total_blue;
             }
         }
     }
+}
+
 }
 void filter13(Image &image) {
     double sunshine = 0.25;
@@ -449,10 +452,10 @@ int main(){
                 filter10(image, image_name);
                 break;
             case 'L':
-                filter11();
+                filter12(image,2);
+
                 break;
             case 'M':
-                filter12(image);
                 break;
             case 'N':
                 filter13(image);
