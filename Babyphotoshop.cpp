@@ -56,7 +56,19 @@ void filter4(Image &image){
     string image_name2;
     cout << "Please Enter Name of the second Image to merge with the first image: ";
     cin >> image_name2;
-    Image image2(image_name2);
+    Image image2;
+    while(true) {
+        try {
+            if (image2.loadNewImage(image_name)) {
+                image2.loadNewImage(image_name);
+                break;
+            }
+
+        } catch (invalid_argument) {
+            cout << "Please enter a valid extension \n" << endl;
+            cin >> image_name2;
+        }
+    }
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             for (int k = 0; k < 3; k++) {
@@ -180,8 +192,8 @@ void filter6(Image &image) {
             }
         }
         Image temp;
-        image=image2;
-        image2=temp;
+        image = image2;
+        image2 = temp;
 
     }
 }
@@ -264,8 +276,6 @@ void filter9(Image &image){
 
         }
     }
-
-
 }
 void filter10(Image &image ,string &image_name){
     Image image1(image_name);
@@ -349,7 +359,6 @@ void filter15(Image &image){
                     // Set pixel value to white
                     image(j, i + k, 0) = 0;
                     image(j, i + k, 1) = 0;
-
                     image(j, i + k, 2) = 0;
                 }
             }
@@ -363,7 +372,62 @@ void filter16(Image &image){
         }
     }
 }
+void filter17(Image image){
 
+}
+Image filter18(Image image){
+    double degree;
+    cout << "Enter a degree: ";
+    cin >> degree;
+    degree = (22 * degree) / (7 * 180);
+    while(true){
+        bool valid = true;
+        if (degree == 90 || degree == 270){
+            valid = false;
+        }
+        if(valid) break;
+        cout << "Invalid input\n";
+        cout << "Enter an angle: ";
+        cin >> degree;
+    }
+    int width = image.width;
+    int height = image.height;
+    double l = height * tan(degree); // Calculate the skewing length based on height
+    int newWidth = width + int(l);    // New width after skewing
+    int x_shift = (newWidth - width) / 2; // Calculate the shift for the new width to maintain centering
+    Image image1(newWidth, height); // Create new image with adjusted width
+    for (int i = 0; i < newWidth; ++i) {
+        for (int j = 0; j < height; ++j) {
+            for(int k = 0; k < 3; k++){
+                image1(i, j, k) = 255; // Initialize the new image with white pixels
+            }
+        }
+    }
+    for (int i = 0; i < newWidth; ++i) {
+        for (int j = 0; j < height; ++j) {
+            for(int k = 0; k < 3; k++){
+                int originalX = i - x_shift - int(l) / 2 + int(l) * j / height; // Calculate original x-coordinate
+                if (originalX >= 0 && originalX < width) { // Check if original x-coordinate is within bounds
+                    image1(i, j, k) = image(originalX, j, k); // Copy pixel values from original image to temporary image
+                }
+            }
+        }
+    }
+    string image_name;
+    cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
+    cin >> image_name;
+    while(true){
+        try {
+            if (image1.saveImage(image_name)) {
+                image1.saveImage(image_name);
+                break;
+            }
+        } catch( invalid_argument) {
+            cout << "Please enter a valid extension \n" << endl;
+            cin>> image_name;
+        }
+    }
+}
 int main(){
     char choice;
     while (true) {
@@ -376,13 +440,13 @@ int main(){
         cout << "F) Rotate image\n";
         cout << "G) Darken and Lighten Images\n";
         cout << "H) Crop image\n";
-        cout <<"I) Add frame\n";
+        cout << "I) Add frame\n";
         cout << "J) Detect Image edges\n";
         cout << "K) Resizing Image\n";
         cout << "L) Blur image\n";
         cout << "M) Sunlight Effect\n";
-        cout << "N)oil Painting effect\n";
-        cout << "O)Tv effect\n";
+        cout << "N) Oil Painting effect\n";
+        cout << "O) Tv effect\n";
         cout << "P) Purple effect\n";
         cout << "Q) infrared effect\n";
         cout << "R) Skewing Filter\n";
@@ -402,7 +466,7 @@ int main(){
             return 0;
         }
         string image_name;
-        cout << "Please Enter Name of the Image which you want to apply a filter on:";
+        cout << "Please Enter Name of the Image which you want to apply a filter on with (.png, .jpeg, .jpg, .bmp):";
         cin>>image_name;
         Image image;
     while(true){
@@ -416,8 +480,6 @@ int main(){
     } catch( invalid_argument) {
         cout << "Please enter a valid photo \n" << endl;
         cin>>image_name;
-
-
         }
     }
         switch (choice) {
@@ -453,7 +515,6 @@ int main(){
                 break;
             case 'L':
                 filter12(image,2);
-
                 break;
             case 'M':
                 break;
@@ -466,27 +527,24 @@ int main(){
             case 'P':
                 filter16(image);
                 break;
-
-
+            case 'Q':
+                filter17(image);
+                break;
+            case 'R':
+                filter18(image);
+                break;
         }
-
-    cout << "Please enter the image name to store the new image: ";
+    cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
     cin >> image_name;
-
     while(true){
         try {
             if (image.saveImage(image_name)) {
                 image.saveImage(image_name);
-
                 break;
-
             }
-
         } catch( invalid_argument) {
             cout << "Please enter a valid extension \n" << endl;
             cin>>image_name;
-
-
             }
         }
     }
