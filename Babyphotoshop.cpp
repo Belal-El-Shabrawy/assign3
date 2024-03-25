@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Image_Class.h"
-
+#include<limits>
 using namespace std;
 
 void filter1(Image &image){
@@ -40,7 +40,7 @@ void filter2(Image &image){
         }
     }
 }
-void filter3(Image image){
+void filter3(Image &image){
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             // Set all channels to the average value
@@ -128,10 +128,8 @@ void filter6(Image &image) {
     choice = toupper(choice);
     while (choice != 'A' && choice != 'B' && choice != 'C') {
         cout << "Enter a valid choice ( A , B,C )\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> choice;
         choice = toupper(choice);
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     if (choice == 'A') {
         Image image2(n, m); // Width and height are swapped for the rotated image
@@ -146,10 +144,10 @@ void filter6(Image &image) {
                 }
             }
         }
-        string filename;
-        cout << "Please enter the image name to store the new image: ";
-        cin >> filename;
-        image2.saveImage(filename);
+        Image temp;
+        image=image2;
+        image2=temp;
+
 
 
     } else if (choice == 'B') {
@@ -164,10 +162,27 @@ void filter6(Image &image) {
                 }
             }
         }
-        string filename;
-        cout << "Please enter the image name to store the new image: ";
-        cin >> filename;
-        image2.saveImage(filename);
+
+        Image temp;
+        image=image2;
+        image2=temp;
+    }
+    else if(choice=='C'){
+    Image image2(n, m);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            // Assign the pixel at (i, j) of the original image to the rotated position in the result image
+            // The formula for the rotated position is (j, m - i - 1)
+            for(int k=0;k<3;k++){
+
+                image2(j, m - i - 1, k) = image(i, j, k);
+                }
+            }
+        }
+        Image temp;
+        image=image2;
+        image2=temp;
+
     }
 }
 void filter7(Image &image){
@@ -207,9 +222,14 @@ void filter7(Image &image){
         }
     }
 }
-Image filter8(Image image){
-    for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < 40; ++j) {
+Image filter8(Image &image){
+
+
+
+}
+void filter9(Image &image){
+        for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < 30; ++j) {
              // Initialize average value
             image(i, j, 0) = 2;
             image(i, j, 1) = 2;
@@ -217,38 +237,34 @@ Image filter8(Image image){
 
         }
     }
-    for (int i = 0; i < 40; ++i) {
+    for (int i = 0; i < 30; ++i) {
         for (int j = 0; j < image.height; ++j) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
-    for (int i = image.width; i >image.width-40 ; i--) {
+    for (int i = image.width; i >image.width-30 ; i--) {
         for (int j = 0; j < image.height; j++) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
-    for (int j = image.height-1; j > image.height-40; j--) {
+    for (int j = image.height-1; j > image.height-30; j--) {
         for (int i = 0; i <image.width ; i++) {
              // Initialize average value
-            image(i, j, 0) = 65;
-            image(i, j, 1) = 217;
-            image(i, j, 2) = 105;
+            image(i, j, 0) = 2;
+            image(i, j, 1) = 2;
+            image(i, j, 2) = 232;
 
         }
     }
 
-
-}
-void filter9(Image image){
-    
 
 }
 void filter10(Image &image ,string &image_name){
@@ -280,34 +296,37 @@ void filter10(Image &image ,string &image_name){
 void filter11(){
 
 }
-void filter12(Image &image) {
 
-    int width = image.width - (image.width % 3);
-    int height = image.height - (image.height % 3);
-    for (int i = 0; i < width; i += 3) {
-        for (int j = 0; j < height; j += 3) {
-            unsigned int total_red = 0, total_green = 0, total_blue = 0;
-            for (int k = 0; k < 3; ++k) {
-                for (int l = 0; l < 3; ++l) {
-                    total_red += image(i + k, j + l, 0);
-                    total_green += image(i + k, j + l, 1);
-                    total_blue += image(i + k, j + l, 2);
-                }
+void filter12(Image &image,double sigma) {
+
+    int width = image.width;
+    int height = image.height;
+
+for(int i = 1; i < width - 1; ++i) {
+    for(int j = 1; j < height - 1; ++j) {
+        unsigned int total_red = 0, total_green = 0, total_blue = 0;
+        for(int k = -1; k <= 1; ++k) {
+            for(int l = -1; l <= 1; ++l) {
+                total_red += image(i + k, j + l, 0);
+                total_green += image(i + k, j + l, 1);
+                total_blue += image(i + k, j + l, 2);
             }
-            // Compute the average color
-            total_red /= 9;
-            total_green /= 9;
-            total_blue /= 9;
-            // Assign the averaged values back to the image
-            for (int k = 0; k < 3; ++k) {
-                for (int l = 0; l < 3; ++l) {
-                    image(i + k, j + l, 0) = total_red;
-                    image(i + k, j + l, 1) = total_green;
-                    image(i + k, j + l, 2) = total_blue;
-                }
+        }
+        // Compute the average color
+        total_red = round((float)total_red / 9.0);
+        total_green = round((float)total_green / 9.0);
+        total_blue = round((float)total_blue / 9.0);
+        // Assign the averaged values back to the image
+        for(int k = -1; k <= 1; ++k) {
+            for(int l = -1; l <= 1; ++l) {
+                image(i + k, j + l, 0) = total_red;
+                image(i + k, j + l, 1) = total_green;
+                image(i + k, j + l, 2) = total_blue;
             }
         }
     }
+}
+
 }
 void filter13(Image &image) {
     double sunshine = 0.25;
@@ -319,10 +338,9 @@ void filter13(Image &image) {
         }
     }
 }
-void filter15(Image image){
+void filter15(Image &image){
     const int lineSpacing = 5; // Spacing between horizontal lines
     const int lineThickness = 2; // Thickness of the lines
-
     for (int i = 0; i < image.height; i += lineSpacing) {
         // Draw horizontal lines
         for (int k = 0; k < lineThickness; k++) {
@@ -331,38 +349,49 @@ void filter15(Image image){
                     // Set pixel value to white
                     image(j, i + k, 0) = 0;
                     image(j, i + k, 1) = 0;
+
                     image(j, i + k, 2) = 0;
                 }
             }
         }
     }
 }
-void filter16(Image image){
-for (int i = 0; i < image.width; ++i) {
-     for (int j = 0; j < image.height; ++j) {
-        image(i,j,1)=0;
-     }
- }
+void filter16(Image &image){
+    for(int i =0 ; i<image.width;i++){
+        for(int j=0;j<image.height;j++){
+            image(i,j,1)=0;
+        }
+    }
 }
+
 int main(){
     char choice;
     while (true) {
         cout << "\n|**Welcome Baby Photoshop app**|\n";
         cout << "A) Grey scale filter\n";
         cout << "B) Black and White\n";
+        cout << "C) Invert image\n;";
         cout << "D) Merge Images\n";
         cout << "E) Flip Image\n";
+        cout << "F) Rotate image\n";
         cout << "G) Darken and Lighten Images\n";
+        cout << "H) Crop image\n";
+        cout <<"I) Add frame\n";
         cout << "J) Detect Image edges\n";
-        cout << "N) Sunlight Effect\n";
-        cout << "H)Purple effect\n";
-        cout << "I)Tv effect\n";
+        cout << "K) Resizing Image\n";
+        cout << "L) Blur image\n";
+        cout << "M) Sunlight Effect\n";
+        cout << "N)oil Painting effect\n";
+        cout << "O)Tv effect\n";
+        cout << "P) Purple effect\n";
+        cout << "Q) infrared effect\n";
+        cout << "R) Skewing Filter\n";
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'D' && choice != 'E' && choice != 'G' && choice != 'J' && choice != 'N' && choice != 'Z'&&choice!='H'&&choice!='I'){
-            cout << "Enter a valid choice ( A , B , D , E , G , J , N , Z)\n";
+        while(choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E' && choice != 'F' && choice != 'G' && choice != 'H'&&choice!='I'&&choice!='J'&&choice!='K'&&choice!='L'&&choice!='M'&&choice!='N'&&choice!='O'&&choice!='P'&&choice!='Q'&&choice!='R'&&choice!='Z'){
+            cout << "Enter a valid choice \n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
             choice = toupper(choice);
@@ -374,9 +403,23 @@ int main(){
         }
         string image_name;
         cout << "Please Enter Name of the Image which you want to apply a filter on:";
-        cin.ignore();
-        getline(cin, image_name);
-        Image image(image_name);
+        cin>>image_name;
+        Image image;
+    while(true){
+        try {
+        if (image.loadNewImage(image_name)) {
+            Image image(image_name);
+            break;
+
+        }
+
+    } catch( invalid_argument) {
+        cout << "Please enter a valid photo \n" << endl;
+        cin>>image_name;
+
+
+        }
+    }
         switch (choice) {
             case 'A':
                 filter1(image);
@@ -395,6 +438,7 @@ int main(){
                 break;
             case 'F':
                 filter6(image);
+                break;
             case 'G':
                 filter7(image);
                 break;
@@ -408,16 +452,42 @@ int main(){
                 filter10(image, image_name);
                 break;
             case 'L':
-                filter11();
+                filter12(image,2);
+
+                break;
             case 'M':
-                filter12(image);
+                break;
             case 'N':
                 filter13(image);
+                break;
+            case 'O':
+                filter15(image);
+                break;
+            case 'P':
+                filter16(image);
+                break;
+
 
         }
-        cout << "Please enter image name to store new image\n";
-        cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-        getline(cin, image_name);
-        image.saveImage(image_name);
+
+    cout << "Please enter the image name to store the new image: ";
+    cin >> image_name;
+
+    while(true){
+        try {
+            if (image.saveImage(image_name)) {
+                image.saveImage(image_name);
+
+                break;
+
+            }
+
+        } catch( invalid_argument) {
+            cout << "Please enter a valid extension \n" << endl;
+            cin>>image_name;
+
+
+            }
+        }
     }
 }
