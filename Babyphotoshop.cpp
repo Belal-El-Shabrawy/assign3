@@ -386,6 +386,7 @@ int main(){
                 break;
             case 'C':
                 filter3(image);
+                break;
             case 'D':
                 filter4(image);
                 break;
