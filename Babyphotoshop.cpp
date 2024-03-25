@@ -43,9 +43,6 @@ void filter2(Image &image){
 void filter3(Image image){
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
-
-
-
             // Set all channels to the average value
             image(i, j, 0) = 255-image(i, j, 0);
             image(i, j, 1) = 255-image(i, j, 1);
@@ -116,65 +113,62 @@ void filter5(Image &image){
         }
     }
 }
-void filter6(Image image){
-    int m = image1.width; // Number of columns in the original image (width)
-    int n = image1.height; // Number of rows in the original image (height)
+void filter6(Image &image) {
+    int m = image.width; // Number of columns in the original image (width)
+    int n = image.height; // Number of rows in the original image (height)
 
 
     // Create a new image to store the rotated result
     char choice;
     cout << "A) rotate 90 degrees\n";
     cout << "B) rotate 180 degrees\n";
-    cout<<"C) rotate 270 degrees\n";
+    cout << "C) rotate 270 degrees\n";
     cout << "Enter your choice:";
     cin >> choice;
     choice = toupper(choice);
-    while(choice != 'A' && choice != 'B' && choice !='C'){
+    while (choice != 'A' && choice != 'B' && choice != 'C') {
         cout << "Enter a valid choice ( A , B,C )\n";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> choice;
         choice = toupper(choice);
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    if(choice=='A'){
+    if (choice == 'A') {
         Image image2(n, m); // Width and height are swapped for the rotated image
-            // Iterate through each pixel of the original image
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            // Assign the pixel at (i, j) of the original image to the rotated position in the result image
-            // The formula for the rotated position is (n - j - 1, i)
-            for(int k=0;k<3;k++){
-                image2(n - j - 1, i, k) = image1(i, j, k);
+        // Iterate through each pixel of the original image
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                // Assign the pixel at (i, j) of the original image to the rotated position in the result image
+                // The formula for the rotated position is (n - j - 1, i)
+                for (int k = 0; k < 3; k++) {
+                    image2(n - j - 1, i, k) = image(i, j, k);
 
                 }
-
             }
         }
-    string filename;
-    cout << "Please enter the image name to store the new image: ";
-    cin >> filename;
-    image2.saveImage(filename);
+        string filename;
+        cout << "Please enter the image name to store the new image: ";
+        cin >> filename;
+        image2.saveImage(filename);
 
 
+    } else if (choice == 'B') {
+        Image image2(m, n);
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                //            Assign the pixel at (i, j) of the original image to the rotated position in the result image
+                //          The formula for the rotated position is (m - i - 1, n - j - 1)
+                for (int k = 0; k < 3; k++) {
 
+                    image2(m - i - 1, n - j - 1, k) = image(i, j, k);
+                }
+            }
+        }
+        string filename;
+        cout << "Please enter the image name to store the new image: ";
+        cin >> filename;
+        image2.saveImage(filename);
     }
-    else if(choice=='B'){
-    Image image2(m, n);
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
- //            Assign the pixel at (i, j) of the original image to the rotated position in the result image
-   //          The formula for the rotated position is (m - i - 1, n - j - 1)
-            for(int k=0;k<3;k++){
-
-                image2(m - i - 1, n - j - 1, k) = image1(i, j, k);
-                }
-            }
-        }
-    string filename;
-    cout << "Please enter the image name to store the new image: ";
-    cin >> filename;
-    image2.saveImage(filename);
-
 }
 void filter7(Image &image){
     char choice;
@@ -286,35 +280,34 @@ void filter10(Image &image ,string &image_name){
 void filter11(){
 
 }
-void filter12(){
-    
-    int width=image.width-(image.width%3);
-    int height=image.height-(image.height%3);
-for(int i = 0; i < width; i += 3) {
-    for(int j = 0; j < height; j += 3) {
-        unsigned int total_red = 0, total_green = 0, total_blue = 0;
-        for(int k = 0; k < 3; ++k) {
-            for(int l = 0; l < 3; ++l) {
-                total_red += image(i + k, j + l, 0);
-                total_green += image(i + k, j + l, 1);
-                total_blue += image(i + k, j + l, 2);
+void filter12(Image &image) {
+
+    int width = image.width - (image.width % 3);
+    int height = image.height - (image.height % 3);
+    for (int i = 0; i < width; i += 3) {
+        for (int j = 0; j < height; j += 3) {
+            unsigned int total_red = 0, total_green = 0, total_blue = 0;
+            for (int k = 0; k < 3; ++k) {
+                for (int l = 0; l < 3; ++l) {
+                    total_red += image(i + k, j + l, 0);
+                    total_green += image(i + k, j + l, 1);
+                    total_blue += image(i + k, j + l, 2);
+                }
             }
-        }
-        // Compute the average color
-        total_red /= 9;
-        total_green /= 9;
-        total_blue /= 9;
-        // Assign the averaged values back to the image
-        for(int k = 0; k < 3; ++k) {
-            for(int l = 0; l < 3; ++l) {
-                image(i + k, j + l, 0) = total_red;
-                image(i + k, j + l, 1) = total_green;
-                image(i + k, j + l, 2) = total_blue;
+            // Compute the average color
+            total_red /= 9;
+            total_green /= 9;
+            total_blue /= 9;
+            // Assign the averaged values back to the image
+            for (int k = 0; k < 3; ++k) {
+                for (int l = 0; l < 3; ++l) {
+                    image(i + k, j + l, 0) = total_red;
+                    image(i + k, j + l, 1) = total_green;
+                    image(i + k, j + l, 2) = total_blue;
+                }
             }
         }
     }
-}
-
 }
 void filter13(Image &image) {
     double sunshine = 0.25;
@@ -362,8 +355,8 @@ int main(){
         cout << "G) Darken and Lighten Images\n";
         cout << "J) Detect Image edges\n";
         cout << "N) Sunlight Effect\n";
-        cout<<"H)Purple effect\n";
-        cout<<"I)Tv effect\n";
+        cout << "H)Purple effect\n";
+        cout << "I)Tv effect\n";
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -416,7 +409,7 @@ int main(){
             case 'L':
                 filter11();
             case 'M':
-                filter12();
+                filter12(image);
             case 'N':
                 filter13(image);
 
