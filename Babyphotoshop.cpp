@@ -59,8 +59,8 @@ void filter4(Image &image){
     Image image2;
     while(true) {
         try {
-            if (image2.loadNewImage(image_name)) {
-                image2.loadNewImage(image_name);
+            if (image2.loadNewImage(image_name2)) {
+                image2.loadNewImage(image_name2);
                 break;
             }
 
@@ -396,15 +396,15 @@ Image filter18(Image image){
     int newWidth = width + int(l);    // New width after skewing
     int x_shift = (newWidth - width) / 2; // Calculate the shift for the new width to maintain centering
     Image image1(newWidth, height); // Create new image with adjusted width
-    for (int i = 0; i < newWidth; ++i) {
-        for (int j = 0; j < height; ++j) {
+    for (int i = 0; i < newWidth; i++) {
+        for (int j = 0; j < height; j++) {
             for(int k = 0; k < 3; k++){
                 image1(i, j, k) = 255; // Initialize the new image with white pixels
             }
         }
     }
-    for (int i = 0; i < newWidth; ++i) {
-        for (int j = 0; j < height; ++j) {
+    for (int i = 0; i < newWidth; i++) {
+        for (int j = 0; j < height; j++) {
             for(int k = 0; k < 3; k++){
                 int originalX = i - x_shift - int(l) / 2 + int(l) * j / height; // Calculate original x-coordinate
                 if (originalX >= 0 && originalX < width) { // Check if original x-coordinate is within bounds
@@ -413,20 +413,7 @@ Image filter18(Image image){
             }
         }
     }
-    string image_name;
-    cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
-    cin >> image_name;
-    while(true){
-        try {
-            if (image1.saveImage(image_name)) {
-                image1.saveImage(image_name);
-                break;
-            }
-        } catch( invalid_argument) {
-            cout << "Please enter a valid extension \n" << endl;
-            cin>> image_name;
-        }
-    }
+    return image1;
 }
 int main(){
     char choice;
@@ -434,7 +421,7 @@ int main(){
         cout << "\n|**Welcome Baby Photoshop app**|\n";
         cout << "A) Grey scale filter\n";
         cout << "B) Black and White\n";
-        cout << "C) Invert image\n;";
+        cout << "C) Invert image\n";
         cout << "D) Merge Images\n";
         cout << "E) Flip Image\n";
         cout << "F) Rotate image\n";
@@ -531,7 +518,7 @@ int main(){
                 filter17(image);
                 break;
             case 'R':
-                filter18(image);
+                image = filter18(image);
                 break;
         }
     cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
