@@ -4,6 +4,11 @@
 #include "Image_Class.h"
 using namespace std;
 
+void filter11(Image &image)
+{
+    
+}
+
 void filter13(Image &image) {
     double sunshine = 0.25;
     for (int y = 0; y < image.height; ++y) {
@@ -107,6 +112,7 @@ int main() {
                     break;
                 case 'D':
                     // Call filter function
+                    filter11(image);
                     break;
                 case 'E':
                     // Call filter function

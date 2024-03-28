@@ -234,10 +234,30 @@ void filter7(Image &image){
         }
     }
 }
-Image filter8(Image &image){
-
-
-
+void filter8(Image &image)
+{
+    int x,y,w,h;
+    cout<<"Please enter upper left corner pixel coordinate(first pixel is zero), width and height respectively: ";
+    cin>>x>>y>>w>>h;
+    while((x<0||x>image.width)||(y<0||y>image.height)||(w<=0||w>(image.width-w))||(h<=0||h>(image.height-h)))
+    {
+        cout<<"Please enter valid number"<<endl;
+        cout<<"Please enter upper left corner pixel coordinate(first pixel is zero), width and height respectively: ";
+        cin>>x>>y>>w>>h;
+    }
+    Image nwImg = image;
+    nwImg=Image(w,h);
+    for(int i=0,ii=x;i<w;i++,ii++)
+    {
+        for(int j=0,jj=y;j<h;j++,jj++)
+        {
+            for(int k=0;k<3;k++)
+            {
+                nwImg(i,j,k)=image(ii,jj,k);
+            }
+        }
+    }
+    image=nwImg;
 }
 void filter9(Image &image){
         for (int i = 0; i < image.width; ++i) {
