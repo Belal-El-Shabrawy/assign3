@@ -1,8 +1,35 @@
 #include <iostream>
 #include "Image_Class.h"
 #include<limits>
-using namespace std;
+#include <string>
+#include <algorithm>
+#include <random>
+#include <vector>
+struct Point {
+    int x;
+    int y;
+};
 
+
+
+using namespace std;
+int digit_checker(string value) {//to check if the input is digit
+    while (true) {
+
+        for (char i : value) {
+            if (!isdigit(i)) {
+                cout << "Eneter number only ";
+                cin >> value;
+                return digit_checker(value);
+            }
+
+
+        }
+        return stoi(value);
+
+
+    }
+}
 void filter1(Image &image){
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -40,6 +67,8 @@ void filter2(Image &image){
         }
     }
 }
+
+
 void filter3(Image &image){
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
@@ -51,6 +80,8 @@ void filter3(Image &image){
     }
 
 }
+
+
 void filter4(Image &image){
     string image_name;
     string image_name2;
@@ -259,9 +290,27 @@ void filter8(Image &image)
     }
     image=nwImg;
 }
+
+
 void filter9(Image &image){
-        for (int i = 0; i < image.width; ++i) {
-        for (int j = 0; j < 30; ++j) {
+    char choice;
+
+    cout << "A) Default Frame\n";
+    cout << "B) Fancy  frame\n";
+    cout << "Enter your choice:";
+    cin >> choice;
+    choice = toupper(choice);
+    while(choice != 'A' && choice != 'B'){
+        cout << "Enter a valid choice ( A , B )\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> choice;
+        choice = toupper(choice);
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    if(choice=='A'){
+    int thickness=20;
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < thickness; ++j) {
              // Initialize average value
             image(i, j, 0) = 2;
             image(i, j, 1) = 2;
@@ -269,7 +318,7 @@ void filter9(Image &image){
 
         }
     }
-    for (int i = 0; i < 30; ++i) {
+        for (int i = 0; i < thickness; ++i) {
         for (int j = 0; j < image.height; ++j) {
              // Initialize average value
             image(i, j, 0) = 2;
@@ -278,7 +327,7 @@ void filter9(Image &image){
 
         }
     }
-    for (int i = image.width; i >image.width-30 ; i--) {
+    for (int i = image.width; i >image.width-thickness ; i--) {
         for (int j = 0; j < image.height; j++) {
              // Initialize average value
             image(i, j, 0) = 2;
@@ -287,7 +336,7 @@ void filter9(Image &image){
 
         }
     }
-    for (int j = image.height-1; j > image.height-30; j--) {
+    for (int j = image.height-1; j > image.height-thickness; j--) {
         for (int i = 0; i <image.width ; i++) {
              // Initialize average value
             image(i, j, 0) = 2;
@@ -296,7 +345,158 @@ void filter9(Image &image){
 
         }
     }
+
+    }
+    else{
+    int red;
+    int green;
+    int blue;
+    string test;
+
+    cout << "A) Default color\n";
+    cout << "B) Custom color\n";
+    cout << "Enter your choice:";
+    cin >> choice;
+    choice = toupper(choice);
+    while(choice != 'A' && choice != 'B'){
+        cout << "Enter a valid choice ( A , B )\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> choice;
+        choice = toupper(choice);
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    if(choice=='A'){
+        red=2;
+        blue=2;
+        green=232;
+    }
+    else{
+        cout<<"Enter red value ";
+        cin>>test;
+        red=digit_checker(test);
+        cout<<"Enter green value ";
+        cin>>test;
+        green=digit_checker(test);
+        cout<<"Enter blue value ";
+        cin>>test;
+        blue=digit_checker(test);
+        while(true){
+        bool condition1=false;
+        bool condition2=false;
+        bool condition3=false;
+
+            if(red>255 || red<0){
+                cout<<"Enter red only from 0 to 255 ";
+                cin>>red;
+            }
+            else{
+                condition1=true;
+            }
+
+            if(green>255 || green<0){
+                cout<<"Enter green only from 0 to 255 ";
+                cin>>green;
+            }
+            else{
+                condition2=true;
+            }
+
+            if(blue>255 || blue<0){
+                cout<<"Enter blue only from 0 to 255 ";
+                cin>>blue;
+            }
+            else{
+                condition3=true;
+            }
+            if(!condition1||!condition2||!condition3){
+                continue;
+            }
+            else{
+                break;
+            }
+
+
+
+        }
+    }
+         int thickness=20;
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < thickness; ++j) {
+             // Initialize average value
+            image(i, j, 0) = red;
+            image(i, j, 1) = green;
+            image(i, j, 2) = blue;
+
+        }
+    }
+    for (int i = thickness+10; i < image.width-(thickness+10); ++i) {
+        for (int j = (thickness+5); j <(thickness+5)+5 ; ++j) {
+             // Initialize average value
+            image(i, j, 0) = 255;
+            image(i, j, 1) = 255;
+            image(i, j, 2) = 255;
+
+        }
+    }
+    for (int i = 0; i < thickness; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+             // Initialize average value
+            image(i, j, 0) = red;
+            image(i, j, 1) = green;
+            image(i, j, 2) = blue;
+
+        }
+    }
+    for (int i = thickness+10; i < thickness+15; ++i) {
+        for (int j = thickness+10; j <image.height-(thickness+10) ; ++j) {
+             // Initialize average value
+            image(i, j, 0) = 255;
+            image(i, j, 1) = 255;
+            image(i, j, 2) = 255;
+
+        }
+    }
+    for (int i = image.width; i >image.width-thickness ; i--) {
+        for (int j = 0; j < image.height; j++) {
+             // Initialize average value
+            image(i, j, 0) = red;
+            image(i, j, 1) = green;
+            image(i, j, 2) = blue;
+
+        }
+    }
+    for (int i = thickness+10; i < image.width-(thickness+10); ++i) {
+        for (int j = image.height-(thickness+10); j >(image.height-(thickness+10))-5 ; j--) {
+             // Initialize average value
+            image(i, j, 0) = 255;
+            image(i, j, 1) = 255;
+            image(i, j, 2) = 255;
+
+        }
+    }
+    for (int i = image.width-thickness-11; i > (image.width-thickness-10)-5; i--) {
+        for (int j = thickness+10; j <image.height-(thickness+10) ; ++j) {
+             // Initialize average value
+            image(i, j, 0) = 255;
+            image(i, j, 1) = 255;
+            image(i, j, 2) = 255;
+
+        }
+    }
+    for (int j = image.height-1; j > image.height-thickness; j--) {
+        for (int i = 0; i <image.width ; i++) {
+             // Initialize average value
+            image(i, j, 0) = red;
+            image(i, j, 1) = green;
+            image(i, j, 2) = blue;
+
+        }
+    }
+    }
+
 }
+
+
 void filter10(Image &image ,string &image_name){
     Image image1(image_name);
     int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
@@ -331,8 +531,25 @@ void filter12(Image &image,double sigma) {
 
     int width = image.width;
     int height = image.height;
+    string rr;
+    int number;
+    cout<<"Enter the blur radius ";
+    cin>>rr;
+    number=digit_checker(rr);
+    while(number>8 || number<1){
+        cout<<"The number must be from 1 to 8 "<<endl;
+        cin>>number;
+    }
 
-for(int i = 1; i < width - 1; ++i) {
+
+
+
+
+
+
+
+for(int o=0; o<number;o++){
+    for(int i = 1; i < width - 1; ++i) {
     for(int j = 1; j < height - 1; ++j) {
         unsigned int total_red = 0, total_green = 0, total_blue = 0;
         for(int k = -1; k <= 1; ++k) {
@@ -355,7 +572,10 @@ for(int i = 1; i < width - 1; ++i) {
             }
         }
     }
+    }
+
 }
+
 
 }
 void filter13(Image &image) {
@@ -369,30 +589,61 @@ void filter13(Image &image) {
     }
 }
 void filter15(Image &image){
+    // Define a random number generator engine
+    mt19937 rng(random_device{}());
+    // Define a normal distribution with mean 0 and standard deviation 20 (for example)
+    normal_distribution<double> dist(0.0, 20.0); // Adjust the standard deviation as needed
+
+    // Loop through each pixel in the image
+    for (int i = 0; i < image.height; ++i) {
+        for (int j = 0; j < image.width; ++j) {
+            // Generate a random number from the Gaussian distribution
+            double noiseRed = dist(rng);
+            double noiseGreen = dist(rng);
+            double noiseBlue = dist(rng);
+
+            // Add Gaussian noise to the pixel values
+            int newRed = min(255, max(0, static_cast<int>(image(j, i, 0) + noiseRed)));
+            int newGreen = min(255, max(0, static_cast<int>(image(j, i, 1) + noiseGreen)));
+            int newBlue = min(255, max(0, static_cast<int>(image(j, i, 2) + noiseBlue)));
+
+            // Assign the new pixel values to the image
+            image(j, i, 0) = newRed;
+            image(j, i, 1) = newGreen;
+            image(j, i, 2) = newBlue;
+        }
+    }
+
+}
+void filter16(Image &image){
+    for(int i =0 ; i<image.width;i++){
+        for(int j=0;j<image.height;j++){
+            image(i,j,1)=.7 *image(i,j,1) ;
+        }
+    }
+}
+void filter17(Image &image){
     const int lineSpacing = 5; // Spacing between horizontal lines
     const int lineThickness = 2; // Thickness of the lines
-    for (int i = 0; i < image.height; i += lineSpacing) {
-        // Draw horizontal lines
-        for (int k = 0; k < lineThickness; k++) {
-            if (i + k < image.height) {
-                for (int j = 0; j < image.width; j++) {
-                    // Set pixel value to white
-                    image(j, i + k, 0) = 0;
-                    image(j, i + k, 1) = 0;
-                    image(j, i + k, 2) = 0;
+
+// Loop to generate horizontal lines
+for (int i = 0; i < image.height; i += lineSpacing) {
+    // Draw horizontal lines
+    for (int k = 0; k < lineThickness; k++) {
+        if (i + k < image.height) {
+            for (int j = 0; j < image.width; j++) {
+                // Distort pixel values by shifting horizontally
+                int shift = rand() % 20 - 9; // Random shift between -3 and 3
+                int newPos = j + shift;
+                if (newPos >= 0 && newPos < image.width) {
+                    image(j, i + k, 0) = image(newPos, i + k, 0); // Red channel
+                    image(j, i + k, 1) = image(newPos, i + k, 1); // Green channel
+                    image(j, i + k, 2) = image(newPos, i + k, 2); // Blue channel
                 }
             }
         }
     }
 }
-void filter16(Image &image){
-    for(int i =0 ; i<image.width;i++){
-        for(int j=0;j<image.height;j++){
-            image(i,j,1)=0;
-        }
-    }
-}
-void filter17(Image image){
 
 }
 Image filter18(Image image){
@@ -437,7 +688,23 @@ Image filter18(Image image){
 }
 int main(){
     char choice;
-    while (true) {
+    string image_name;
+    Image image;
+    cout << "Please Enter Name of the Image which you want to apply a filter on with (.png, .jpeg, .jpg, .bmp):";
+    cin>>image_name;
+    while(true){
+        try {
+        if (image.loadNewImage(image_name)) {
+            Image image(image_name);
+            break;
+
+        }
+
+    } catch( invalid_argument) {
+        cout << "Please enter a valid photo \n" << endl;
+        cin>>image_name;
+        }
+    }    while (true) {
         cout << "\n|**Welcome Baby Photoshop app**|\n";
         cout << "A) Grey scale filter\n";
         cout << "B) Black and White\n";
@@ -455,8 +722,9 @@ int main(){
         cout << "N) Oil Painting effect\n";
         cout << "O) Tv effect\n";
         cout << "P) Purple effect\n";
-        cout << "Q) infrared effect\n";
+        cout << "Q) Glitch effect\n";
         cout << "R) Skewing Filter\n";
+
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -470,25 +738,10 @@ int main(){
         }
         if (choice == 'Z'){
             cout << "\nGood Bye\n";
-            return 0;
-        }
-        string image_name;
-        cout << "Please Enter Name of the Image which you want to apply a filter on with (.png, .jpeg, .jpg, .bmp):";
-        cin>>image_name;
-        Image image;
-    while(true){
-        try {
-        if (image.loadNewImage(image_name)) {
-            Image image(image_name);
             break;
 
         }
 
-    } catch( invalid_argument) {
-        cout << "Please enter a valid photo \n" << endl;
-        cin>>image_name;
-        }
-    }
         switch (choice) {
             case 'A':
                 filter1(image);
@@ -541,6 +794,9 @@ int main(){
                 image = filter18(image);
                 break;
         }
+
+
+    }
     cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
     cin >> image_name;
     while(true){
@@ -554,5 +810,4 @@ int main(){
             cin>>image_name;
             }
         }
-    }
 }
