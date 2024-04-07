@@ -5,10 +5,6 @@
 #include <algorithm>
 #include <random>
 #include <vector>
-struct Point {
-    int x;
-    int y;
-};
 
 
 
