@@ -523,8 +523,49 @@ void filter10(Image &image ,string &image_name){
             }
         }}
 }
-void filter11(){
-
+Image filter11(Image image){
+    double wScale,hScale;
+    int wPixel=image.width,hPixel=image.height;
+    string choice;
+    cout<<"Do you want to scale using:\nA) Pixels\nB) Percentage\n";
+    cin>>choice;
+    choice[0]=toupper(choice[0]);
+    while(choice!="A"&&choice!="B")
+    {
+        cout<<"Please enter valid choice"<<endl;
+        cin>>choice;
+        choice[0]=toupper(choice[0]);
+    }
+    if(choice=="A")
+    {
+        cout<<"Enter width, height respectively: ";
+        cin>>wPixel>>hPixel;
+        wScale=image.width/wPixel;
+        hScale=image.height/hPixel;
+    }
+    else if(choice=="B")
+    {
+        cout<<"Enter percentage: ";
+        int percentage;
+        cin>>percentage;
+        wScale=percentage/100;
+        hScale=percentage/100;
+        wPixel=round(image.width*wScale);
+        hPixel=round(image.height*hScale);
+    }
+    Image nwImg=Image(wPixel,hPixel);
+    for(int i = 0;i<wPixel;i++)
+    {
+        for(int j=0;j<hPixel;j++)
+        {
+            int w,h;
+            w=round(wScale*i);
+            h=round(hScale*j);
+            for(int k=0;k<3;k++)
+                nwImg(i,j,k)=image(w,h,k);
+        }
+    }
+    return nwImg;
 }
 
 void filter12(Image &image,double sigma) {
@@ -737,9 +778,7 @@ int main(){
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         if (choice == 'Z'){
-            cout << "\nGood Bye\n";
             break;
-
         }
 
         switch (choice) {
@@ -773,6 +812,9 @@ int main(){
             case 'J':
                 filter10(image, image_name);
                 break;
+            case 'K':
+                image=filter11(image);
+                break;
             case 'L':
                 filter12(image,2);
                 break;
@@ -794,8 +836,6 @@ int main(){
                 image = filter18(image);
                 break;
         }
-
-
     }
     cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
     cin >> image_name;
