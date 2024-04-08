@@ -815,9 +815,9 @@ int main(){
                 filter12(image,2);
                 break;
             case 'M':
+                filter13(image);
                 break;
             case 'N':
-                filter13(image);
                 break;
             case 'O':
                 filter15(image);
