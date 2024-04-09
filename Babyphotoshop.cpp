@@ -625,6 +625,22 @@ void filter13(Image &image) {
         }
     }
 }
+
+void infrared(Image &image)
+{
+    for(int i=0;i<image.width;i++)
+    {
+        for(int j=0;j<image.height;j++)
+        {
+            int avg = (image(i,j,1)+image(i,j,2))/2;
+            avg = abs(255-avg);
+            image(i,j,0)=255;
+            image(i,j,1)=avg;
+            image(i,j,2)=avg;
+        }
+    }
+}
+
 void filter15(Image &image){
     // Define a random number generator engine
     mt19937 rng(random_device{}());
@@ -761,12 +777,13 @@ int main(){
         cout << "P) Purple effect\n";
         cout << "Q) Glitch effect\n";
         cout << "R) Skewing Filter\n";
+        cout << "S) Infrared Filter\n";
 
         cout << "Z) End\n";
         cout << "Enter your choice: ";
         cin >> choice;
         choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E' && choice != 'F' && choice != 'G' && choice != 'H'&&choice!='I'&&choice!='J'&&choice!='K'&&choice!='L'&&choice!='M'&&choice!='N'&&choice!='O'&&choice!='P'&&choice!='Q'&&choice!='R'&&choice!='Z'){
+        while(choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E' && choice != 'F' && choice != 'G' && choice != 'H'&&choice!='I'&&choice!='J'&&choice!='K'&&choice!='L'&&choice!='M'&&choice!='N'&&choice!='O'&&choice!='P'&&choice!='Q'&&choice!='R'&&choice!='S'&&choice!='Z'){
             cout << "Enter a valid choice \n";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
@@ -830,6 +847,9 @@ int main(){
                 break;
             case 'R':
                 image = filter18(image);
+                break;
+            case 'S':
+                infrared(image);
                 break;
         }
     }
