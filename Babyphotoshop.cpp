@@ -1,10 +1,12 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include "Image_Class.h"
+#include <iostream>
 #include<limits>
 #include <string>
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <regex>
 
 
 
@@ -14,7 +16,7 @@ int digit_checker(string value) {//to check if the input is digit
 
         for (char i : value) {
             if (!isdigit(i)) {
-                cout << "Eneter number only ";
+                cout << "Enter number only ";
                 cin >> value;
                 return digit_checker(value);
             }
@@ -26,7 +28,7 @@ int digit_checker(string value) {//to check if the input is digit
 
     }
 }
-void filter1(Image &image){
+void grayscale(Image &image){
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             unsigned  int average = 0;
@@ -40,8 +42,8 @@ void filter1(Image &image){
         }
     }
 }
-void filter2(Image &image){
-    filter1(image);
+void blackAndWhite(Image &image){
+    grayscale(image);
     for(int i = 0;i<image.width;i++)
     {
         for(int j = 0;j<image.height;j++)
@@ -65,7 +67,7 @@ void filter2(Image &image){
 }
 
 
-void filter3(Image &image){
+void invert(Image &image){
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             // Set all channels to the average value
@@ -78,7 +80,7 @@ void filter3(Image &image){
 }
 
 
-void filter4(Image &image){
+void merge(Image &image){
     string image_name;
     string image_name2;
     cout << "Please Enter Name of the second Image to merge with the first image: ";
@@ -106,7 +108,7 @@ void filter4(Image &image){
         }
     }
 }
-void filter5(Image &image){
+void flip(Image &image){
     cout<<"A) Flip vertically"<<endl;
     cout<<"B) Flip horizontally"<<endl;
     string choice;
@@ -152,7 +154,7 @@ void filter5(Image &image){
         }
     }
 }
-void filter6(Image &image) {
+void rotate(Image &image) {
     int m = image.width; // Number of columns in the original image (width)
     int n = image.height; // Number of rows in the original image (height)
 
@@ -224,7 +226,7 @@ void filter6(Image &image) {
 
     }
 }
-void filter7(Image &image){
+void darkenAndLighten(Image &image){
     char choice;
     cout << "A) Lighten Image\n";
     cout << "B) Darken Image\n";
@@ -261,7 +263,7 @@ void filter7(Image &image){
         }
     }
 }
-void filter8(Image &image)
+void crop(Image &image)
 {
     int x,y,w,h;
     cout<<"Please enter upper left corner pixel coordinate(first pixel is zero), width and height respectively: ";
@@ -288,7 +290,7 @@ void filter8(Image &image)
 }
 
 
-void filter9(Image &image){
+void frame(Image &image){
     char choice;
 
     cout << "A) Default Frame\n";
@@ -493,7 +495,7 @@ void filter9(Image &image){
 }
 
 
-void filter10(Image &image ,string &image_name){
+void imageEdges(Image &image ,string &image_name){
     Image image1(image_name);
     int kernelX[3][3] = { {-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -1, -1}, {0, 0, 0}, {1, 1, 1} };
@@ -519,7 +521,7 @@ void filter10(Image &image ,string &image_name){
             }
         }}
 }
-Image filter11(Image image){
+Image resize(Image image){
     double wScale,hScale;
     int wPixel=image.width,hPixel=image.height;
     string choice;
@@ -564,7 +566,7 @@ Image filter11(Image image){
     return nwImg;
 }
 
-void filter12(Image &image,double sigma) {
+void blur(Image &image,double sigma) {
 
     int width = image.width;
     int height = image.height;
@@ -615,7 +617,7 @@ for(int o=0; o<number;o++){
 
 
 }
-void filter13(Image &image) {
+void sunlight(Image &image) {
     double sunshine = 0.25;
     for (int y = 0; y < image.height; ++y) {
         for (int x = 0; x < image.width; ++x) {
@@ -626,7 +628,7 @@ void filter13(Image &image) {
     }
 }
 
-void filter14(Image &image)
+void oilPainting(Image &image)
 {
     for(int i=0;i<image.width;i+=5)
     {
@@ -652,7 +654,7 @@ void infrared(Image &image)
     }
 }
 
-void filter15(Image &image){
+void television(Image &image){
     // Define a random number generator engine
     mt19937 rng(random_device{}());
     // Define a normal distribution with mean 0 and standard deviation 20 (for example)
@@ -679,14 +681,14 @@ void filter15(Image &image){
     }
 
 }
-void filter16(Image &image){
+void purple(Image &image){
     for(int i =0 ; i<image.width;i++){
         for(int j=0;j<image.height;j++){
             image(i,j,1)=.7 *image(i,j,1) ;
         }
     }
 }
-void filter17(Image &image){
+void glitch(Image &image){
     const int lineSpacing = 5; // Spacing between horizontal lines
     const int lineThickness = 2; // Thickness of the lines
 
@@ -710,7 +712,7 @@ for (int i = 0; i < image.height; i += lineSpacing) {
 }
 
 }
-Image filter18(Image image){
+Image skew(Image image){
     double degree;
     cout << "Enter a degree: ";
     cin >> degree;
@@ -750,9 +752,16 @@ Image filter18(Image image){
     }
     return image1;
 }
+
+void filter20(Image &image)
+{
+    
+}
+
 int main(){
-    char choice;
+    string choice;
     string image_name;
+    int x;
     Image image;
     cout << "Please Enter Name of the Image which you want to apply a filter on with (.png, .jpeg, .jpg, .bmp):";
     cin>>image_name;
@@ -770,98 +779,104 @@ int main(){
         }
     }    while (true) {
         cout << "\n|**Welcome Baby Photoshop app**|\n";
-        cout << "A) Grey scale filter\n";
-        cout << "B) Black and White\n";
-        cout << "C) Invert image\n";
-        cout << "D) Merge Images\n";
-        cout << "E) Flip Image\n";
-        cout << "F) Rotate image\n";
-        cout << "G) Darken and Lighten Images\n";
-        cout << "H) Crop image\n";
-        cout << "I) Add frame\n";
-        cout << "J) Detect Image edges\n";
-        cout << "K) Resizing Image\n";
-        cout << "L) Blur image\n";
-        cout << "M) Sunlight Effect\n";
-        cout << "N) Oil Painting effect\n";
-        cout << "O) Tv effect\n";
-        cout << "P) Purple effect\n";
-        cout << "Q) Glitch effect\n";
-        cout << "R) Skewing Filter\n";
-        cout << "S) Infrared Filter\n";
+        cout << "Filter 1: Grayscale Conversion\n";
+        cout << "Filter 2: Black and White\n";
+        cout << "Filter 3: Invert Image\n";
+        cout << "Filter 4: Merge Images\n";
+        cout << "Filter 5: Flip Image\n";
+        cout << "Filter 6: Rotate image\n";
+        cout << "Filter 7: Darken and Lighten Image\n";
+        cout << "Filter 8: Crop Image\n";
+        cout << "Filter 9: Add frame\n";
+        cout << "Filter 10: Detect Image edges\n";
+        cout << "Filter 11: Resizing Image\n";
+        cout << "Filter 12: Blur Image\n";
+        cout << "Filter 13: Sunlight Effect\n";
+        cout << "Filter 14: Oil Painting Effect\n";
+        cout << "Filter 15: Television Effect\n";
+        cout << "Filter 16: Purple Effect\n";
+        cout << "Filter 17: Infrared Effect\n";
+        cout << "Filter 18: Skewing Filter\n";
+        cout << "Filter 19: Glitch effect\n";
+        cout << "Filter 20: \n";
 
-        cout << "Z) End\n";
+        cout << "21: Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
-        choice = toupper(choice);
-        while(choice != 'A' && choice != 'B' && choice != 'C' && choice != 'D' && choice != 'E' && choice != 'F' && choice != 'G' && choice != 'H'&&choice!='I'&&choice!='J'&&choice!='K'&&choice!='L'&&choice!='M'&&choice!='N'&&choice!='O'&&choice!='P'&&choice!='Q'&&choice!='R'&&choice!='S'&&choice!='Z'){
+        while(true){
+            if(regex_match(choice,regex("[\\d]+")))
+            {
+                x=stoi(choice);
+                if(x>=1&&x<=21)
+                    break;
+            }
             cout << "Enter a valid choice \n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin >> choice;
-            choice = toupper(choice);
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        if (choice == 'Z'){
+        if (x == 21){
             break;
         }
 
-        switch (choice) {
-            case 'A':
-                filter1(image);
+        switch (x) {
+            case 1:
+                grayscale(image);
                 break;
-            case 'B':
-                filter2(image);
+            case 2:
+                blackAndWhite(image);
                 break;
-            case 'C':
-                filter3(image);
+            case 3:
+                invert(image);
                 break;
-            case 'D':
-                filter4(image);
+            case 4:
+                merge(image);
                 break;
-            case 'E':
-                filter5(image);
+            case 5:
+                flip(image);
                 break;
-            case 'F':
-                filter6(image);
+            case 6:
+                rotate(image);
                 break;
-            case 'G':
-                filter7(image);
+            case 7:
+                darkenAndLighten(image);
                 break;
-            case 'H':
-                filter8(image);
+            case 8:
+                crop(image);
                 break;
-            case 'I':
-                filter9(image);
+            case 9:
+                frame(image);
                 break;
-            case 'J':
-                filter10(image, image_name);
+            case 10:
+                imageEdges(image, image_name);
                 break;
-            case 'K':
-                image=filter11(image);
+            case 11:
+                image=resize(image);
                 break;
-            case 'L':
-                filter12(image,2);
+            case 12:
+                blur(image,2);
                 break;
-            case 'M':
-                filter13(image);
+            case 13:
+                sunlight(image);
                 break;
-            case 'N':
-                filter14(image);
+            case 14:
+                oilPainting(image);
                 break;
-            case 'O':
-                filter15(image);
+            case 15:
+                television(image);
                 break;
-            case 'P':
-                filter16(image);
+            case 16:
+                purple(image);
                 break;
-            case 'Q':
-                filter17(image);
-                break;
-            case 'R':
-                image = filter18(image);
-                break;
-            case 'S':
+            case 17:
                 infrared(image);
+                break;
+            case 18:
+                image = skew(image);
+                break;
+            case 19:
+                glitch(image);
+                break;
+            case 20:
+                filter20(image);
                 break;
         }
     }
