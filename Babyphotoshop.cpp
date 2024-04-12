@@ -28,6 +28,24 @@ int digit_checker(string value) {//to check if the input is digit
 
     }
 }
+Image quickresize(Image image,int wPixel , int hPixel){
+    double wScale,hScale;
+    Image nwImg(wPixel,hPixel);
+    wScale=(double)(image.width)/wPixel;
+    hScale=(double)(image.height)/hPixel;
+    for(int i = 0;i<wPixel;i++)
+    {
+        for(int j=0;j<hPixel;j++)
+        {
+            int w,h;
+            w=round(wScale*i);
+            h=round(hScale*j);
+            for(int k=0;k<3;k++)
+                nwImg(i,j,k)=image(w,h,k);
+        }
+    }
+    return nwImg;;
+}
 void grayscale(Image &image){
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -98,6 +116,7 @@ void merge(Image &image){
             cin >> image_name2;
         }
     }
+    image2 = quickresize(image2, image.width,image.height);
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
             for (int k = 0; k < 3; k++) {
