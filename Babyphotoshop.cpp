@@ -538,20 +538,20 @@ Image resize(Image image){
     {
         cout<<"Enter width, height respectively: ";
         cin>>wPixel>>hPixel;
-        wScale=image.width/wPixel;
-        hScale=image.height/hPixel;
     }
     else if(choice=="B")
     {
         cout<<"Enter percentage: ";
-        int percentage;
+        double percentage;
         cin>>percentage;
-        wScale=percentage/100;
-        hScale=percentage/100;
-        wPixel=round(image.width*wScale);
-        hPixel=round(image.height*hScale);
+        wScale=percentage/100.0;
+        hScale=percentage/100.0;
+        wPixel=image.width*wScale;
+        hPixel=image.height*hScale;
     }
     Image nwImg=Image(wPixel,hPixel);
+    wScale=(double)(image.width)/wPixel;
+    hScale=(double)(image.height)/hPixel;
     for(int i = 0;i<wPixel;i++)
     {
         for(int j=0;j<hPixel;j++)
