@@ -129,8 +129,8 @@ void filter5(Image &image){
                 for(int k = 0; k < 3; k++)
                 {
                     temporary=image(i,j,k);
-                    image(i,j,k) = image(i,image.height-j,k);
-                    image(i,image.height-j,k)=temporary;
+                    image(i,j,k) = image(i,image.height-j-1,k);
+                    image(i,image.height-j-1,k)=temporary;
                 }
             }
         }
@@ -145,8 +145,8 @@ void filter5(Image &image){
                 for(int k = 0; k < 3; k++)
                 {
                     temporary=image(i,j,k);
-                    image(i,j,k) = image(image.width-i,j,k);
-                    image(image.width-i,j,k)=temporary;
+                    image(i,j,k) = image(image.width-i-1,j,k);
+                    image(image.width-i-1,j,k)=temporary;
                 }
             }
         }
@@ -626,6 +626,17 @@ void filter13(Image &image) {
     }
 }
 
+void filter14(Image &image)
+{
+    for(int i=0;i<image.width;i+=5)
+    {
+        for(int j=0;j<image.height;j+=5)
+        {
+            
+        }
+    }
+}
+
 void infrared(Image &image)
 {
     for(int i=0;i<image.width;i++)
@@ -835,6 +846,7 @@ int main(){
                 filter13(image);
                 break;
             case 'N':
+                filter14(image);
                 break;
             case 'O':
                 filter15(image);
