@@ -568,7 +568,7 @@ Image resize(Image image){
         wPixel=image.width*wScale;
         hPixel=image.height*hScale;
     }
-    Image nwImg=Image(wPixel,hPixel);
+    Image nwImg(wPixel,hPixel);
     wScale=(double)(image.width)/wPixel;
     hScale=(double)(image.height)/hPixel;
     for(int i = 0;i<wPixel;i++)
