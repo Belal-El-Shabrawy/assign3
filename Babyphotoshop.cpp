@@ -112,7 +112,7 @@ void merge(Image &image){
             }
 
         } catch (invalid_argument) {
-            cout << "Please enter a valid extension \n" << endl;
+            cout << "Please enter a valid extension\n" << endl;
             cin >> image_name2;
         }
     }
