@@ -630,11 +630,15 @@ void sunlight(Image &image) {
 
 void oilPainting(Image &image)
 {
-    for(int i=0;i<image.width;i+=5)
+    for(int i=0;i<image.width;i++)
     {
-        for(int j=0;j<image.height;j+=5)
+        for(int j=0;j<image.height;j++)
         {
-            
+            for(int k=0;k<3;k++)
+            {
+                image(i,j,k)/=30;
+                image(i,j,k)*=30;
+            }
         }
     }
 }
@@ -753,8 +757,7 @@ Image skew(Image image){
     return image1;
 }
 
-void filter20(Image &image)
-{
+void filter20(Image& image) {
     
 }
 
