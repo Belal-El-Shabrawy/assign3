@@ -9,7 +9,7 @@ void filter11(Image &image)
     
 }
 
-void filter13(Image &image) {
+void sunlight(Image &image) {
     double sunshine = 0.25;
     for (int y = 0; y < image.height; ++y) {
         for (int x = 0; x < image.width; ++x) {
@@ -103,7 +103,7 @@ int main() {
             Image image(image_name);
             switch (choice) {
                 case 'A':
-                    filter13(image);
+                    sunlight(image);
                     // Call filter function
                     break;
                 case 'B':

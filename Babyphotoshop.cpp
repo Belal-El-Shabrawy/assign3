@@ -26,15 +26,29 @@ int digit_checker(string value)
         return stoi(value);
     }
 }
-void grayscale(Image &image)
-{
-    for (int i = 0; i < image.width; i++)
+Image quickresize(Image image,int wPixel , int hPixel){
+    double wScale,hScale;
+    Image nwImg(wPixel,hPixel);
+    wScale=(double)(image.width)/wPixel;
+    hScale=(double)(image.height)/hPixel;
+    for(int i = 0;i<wPixel;i++)
     {
-        for (int j = 0; j < image.height; j++)
+        for(int j=0;j<hPixel;j++)
         {
-            unsigned int average = 0;
-            for (int k = 0; k < 3; k++)
-            {
+            int w,h;
+            w=round(wScale*i);
+            h=round(hScale*j);
+            for(int k=0;k<3;k++)
+                nwImg(i,j,k)=image(w,h,k);
+        }
+    }
+    return nwImg;;
+}
+void grayscale(Image &image){
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            unsigned  int average = 0;
+            for (int k = 0; k < 3; k++) {
                 average += image(i, j, k);
             }
             average /= 3;
@@ -100,22 +114,18 @@ void merge(Image &image)
                 image2.loadNewImage(image_name2);
                 break;
             }
-        }
-        catch (invalid_argument)
-        {
-            cout << "Please enter a valid extension \n"
-                 << endl;
+
+        } catch (invalid_argument) {
+            cout << "Please enter a valid extension" << endl;
             cin >> image_name2;
         }
     }
-    for (int i = 0; i < image.width; i++)
-    {
-        for (int j = 0; j < image.height; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                image(i, j, k) = (image(i, j, k)) / 2;
-                image2(i, j, k) = (image2(i, j, k)) / 2;
+    image2 = quickresize(image2, image.width,image.height);
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            for (int k = 0; k < 3; k++) {
+                image(i, j, k) = (image(i, j, k))/2;
+                image2(i, j, k) = (image2(i, j, k))/2;
                 image(i, j, k) = image(i, j, k) + image2(i, j, k);
             }
         }
@@ -845,8 +855,22 @@ Image skew(Image image)
     return image1;
 }
 
-Image brokenTv(Image image)
-{
+Image brokenTvEffect(Image image) {
+    Image image1(image.width, image.height);
+    for (int x = 0; x < image.width; x++) {
+        for (int y = 0; y < image.height; y++) {
+            int index = (y * image.width + x) * 3;
+            int dist = sqrt(pow(x - (image.width/2), 2) + pow(y - (image.height/2), 2));
+            // Increase the contrast based on the distance
+            int contrast = 1 + dist / 80;
+            // set contrast value to a reasonable range
+            contrast = min(max(contrast, 1), 5);
+            for (int c = 0; c < 3; c++) {
+                image1.imageData[index + c] = image.imageData[index + c] * contrast;
+            }
+        }
+    }
+    return image1;
 }
 
 int main()
@@ -901,7 +925,7 @@ int main()
         cout << "Filter 17: Infrared Effect\n";
         cout << "Filter 18: Skewing Filter\n";
         cout << "Filter 19: Glitch effect\n";
-        cout << "Filter 20: \n";
+        cout << "Filter 20: Broken Tv Effect\n";
 
         cout << "\n21: Load new Image\n";
         cout << "22: Save Image\n";
@@ -949,8 +973,7 @@ int main()
                     }
                     catch (invalid_argument)
                     {
-                        cout << "Please enter a valid extension \n"
-                             << endl;
+                        cout << "Please enter a valid extension"<< endl;
                         cin >> image_name;
                     }
                 }
@@ -1054,7 +1077,7 @@ int main()
             glitch(image);
             break;
         case 20:
-            image = brokenTv(image);
+            image = brokenTvEffect(image);
             break;
         }
     }
