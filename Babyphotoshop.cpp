@@ -776,8 +776,22 @@ Image skew(Image image){
     return image1;
 }
 
-void filter20(Image& image) {
-    
+Image brokentveffect(Image image) {
+    Image image1(image.width, image.height);
+    for (int x = 0; x < image.width; x++) {
+        for (int y = 0; y < image.height; y++) {
+            int index = (y * image.width + x) * 3;
+            int dist = sqrt(pow(x - (image.width/2), 2) + pow(y - (image.height/2), 2));
+            // Increase the contrast based on the distance
+            int contrast = 1 + dist / 80;
+            // set contrast value to a reasonable range
+            contrast = min(max(contrast, 1), 5);
+            for (int c = 0; c < 3; c++) {
+                image1.imageData[index + c] = image.imageData[index + c] * contrast;
+            }
+        }
+    }
+    return image1;
 }
 
 int main(){
@@ -820,7 +834,7 @@ int main(){
         cout << "Filter 17: Infrared Effect\n";
         cout << "Filter 18: Skewing Filter\n";
         cout << "Filter 19: Glitch effect\n";
-        cout << "Filter 20: \n";
+        cout << "Filter 20: Broken Tv Effect\n";
 
         cout << "21: Exit\n";
         cout << "Enter your choice: ";
@@ -898,7 +912,7 @@ int main(){
                 glitch(image);
                 break;
             case 20:
-                filter20(image);
+                image = brokentveffect(image);
                 break;
         }
     }
