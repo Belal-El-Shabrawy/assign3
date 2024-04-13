@@ -1009,8 +1009,7 @@ int main()
                 }
                 catch (invalid_argument)
                 {
-                    cout << "Please enter a valid extension \n"
-                         << endl;
+                    cout << "Please enter a valid extension" << endl;
                     cin >> image_name;
                 }
             }
