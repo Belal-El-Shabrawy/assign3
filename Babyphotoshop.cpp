@@ -790,7 +790,7 @@ void glitch(Image &image)
                 for (int j = 0; j < image.width; j++)
                 {
                     // Distort pixel values by shifting horizontally
-                    int shift = rand() % 20 - 9; // Random shift between -3 and 3
+                    int shift = rand() % 50 - 20; // Random shift between -3 and 3
                     int newPos = j + shift;
                     if (newPos >= 0 && newPos < image.width)
                     {
