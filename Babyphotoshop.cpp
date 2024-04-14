@@ -1,3 +1,16 @@
+// File:  CS112_A3_Part2B_S6_20230096_20230300_20230274.cpp.
+// Purpose: This Program can be used to apply 20 Different filters for any image
+// Author: Belal Alaa Elshabrawy ID: 20230096 Section:S6
+//         Amr Salah ID: 20230274 Section:S6
+//         Mark Amir ID: 20230300 Section:S6
+// Belal Alaa : Did (GrayScale, Merge, Lighten and Darken, Edge Detect, Sunshine, Skew, BrokenTvFilter)
+// Amr Salah : Did (Black and White, Flip, Crop, Resize, Oil, Infrared)
+// Mark Amin : Did (Invert colors, Rotate, Frame, Blur, TvEffect, PurpleEffect, GlitchEffect)
+// Emails: Belal ALaa, madbusiness05@gmail.com
+//         Amr Salah,  20230274@stud.fci-cu.edu.eg
+//         Mark Amir,  markamir415@gamil.com
+// Link to GitHub Repo: https://github.com/Belal-El-Shabrawy/assign3.git
+
 #include <bits/stdc++.h>
 #include "Image_Class.h"
 #include <iostream>
@@ -5,7 +18,6 @@
 #include <string>
 #include <algorithm>
 #include <random>
-#include <vector>
 #include <regex>
 
 using namespace std;
@@ -42,7 +54,7 @@ Image quickresize(Image image,int wPixel , int hPixel){
                 nwImg(i,j,k)=image(w,h,k);
         }
     }
-    return nwImg;;
+    return nwImg;
 }
 void grayscale(Image &image){
     for (int i = 0; i < image.width; i++) {
