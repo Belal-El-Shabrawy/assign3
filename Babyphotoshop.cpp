@@ -981,7 +981,7 @@ int main()
             }
             else if (s != "N")
                 cout << "Please enter valid choice" << endl;
-            if (x == 23)
+            if (x == 23||x==21)
                 break;
         }
 
