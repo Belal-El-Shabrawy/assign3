@@ -38,29 +38,34 @@ int digit_checker(string value)
         return stoi(value);
     }
 }
-Image quickresize(Image image,int wPixel , int hPixel){
-    double wScale,hScale;
-    Image nwImg(wPixel,hPixel);
-    wScale=(double)(image.width)/wPixel;
-    hScale=(double)(image.height)/hPixel;
-    for(int i = 0;i<wPixel;i++)
+Image quickresize(Image image, int wPixel, int hPixel)
+{
+    double wScale, hScale;
+    Image nwImg(wPixel, hPixel);
+    wScale = (double)(image.width) / wPixel;
+    hScale = (double)(image.height) / hPixel;
+    for (int i = 0; i < wPixel; i++)
     {
-        for(int j=0;j<hPixel;j++)
+        for (int j = 0; j < hPixel; j++)
         {
-            int w,h;
-            w=round(wScale*i);
-            h=round(hScale*j);
-            for(int k=0;k<3;k++)
-                nwImg(i,j,k)=image(w,h,k);
+            int w, h;
+            w = round(wScale * i);
+            h = round(hScale * j);
+            for (int k = 0; k < 3; k++)
+                nwImg(i, j, k) = image(w, h, k);
         }
     }
     return nwImg;
 }
-void grayscale(Image &image){
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            unsigned  int average = 0;
-            for (int k = 0; k < 3; k++) {
+void grayscale(Image &image)
+{
+    for (int i = 0; i < image.width; i++)
+    {
+        for (int j = 0; j < image.height; j++)
+        {
+            unsigned int average = 0;
+            for (int k = 0; k < 3; k++)
+            {
                 average += image(i, j, k);
             }
             average /= 3;
@@ -126,18 +131,22 @@ void merge(Image &image)
                 image2.loadNewImage(image_name2);
                 break;
             }
-
-        } catch (invalid_argument) {
+        }
+        catch (invalid_argument)
+        {
             cout << "Please enter a valid extension" << endl;
             cin >> image_name2;
         }
     }
-    image2 = quickresize(image2, image.width,image.height);
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            for (int k = 0; k < 3; k++) {
-                image(i, j, k) = (image(i, j, k))/2;
-                image2(i, j, k) = (image2(i, j, k))/2;
+    image2 = quickresize(image2, image.width, image.height);
+    for (int i = 0; i < image.width; i++)
+    {
+        for (int j = 0; j < image.height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                image(i, j, k) = (image(i, j, k)) / 2;
+                image2(i, j, k) = (image2(i, j, k)) / 2;
                 image(i, j, k) = image(i, j, k) + image2(i, j, k);
             }
         }
@@ -867,17 +876,21 @@ Image skew(Image image)
     return image1;
 }
 
-Image brokenTvEffect(Image image) {
+Image brokenTvEffect(Image image)
+{
     Image image1(image.width, image.height);
-    for (int x = 0; x < image.width; x++) {
-        for (int y = 0; y < image.height; y++) {
+    for (int x = 0; x < image.width; x++)
+    {
+        for (int y = 0; y < image.height; y++)
+        {
             int index = (y * image.width + x) * 3;
-            int dist = sqrt(pow(x - (image.width/2), 2) + pow(y - (image.height/2), 2));
+            int dist = sqrt(pow(x - (image.width / 2), 2) + pow(y - (image.height / 2), 2));
             // Increase the contrast based on the distance
             int contrast = 1 + dist / 80;
             // set contrast value to a reasonable range
             contrast = min(max(contrast, 1), 5);
-            for (int c = 0; c < 3; c++) {
+            for (int c = 0; c < 3; c++)
+            {
                 image1.imageData[index + c] = image.imageData[index + c] * contrast;
             }
         }
@@ -985,7 +998,7 @@ int main()
                     }
                     catch (invalid_argument)
                     {
-                        cout << "Please enter a valid extension"<< endl;
+                        cout << "Please enter a valid extension" << endl;
                         cin >> image_name;
                     }
                 }
@@ -993,8 +1006,13 @@ int main()
             }
             else if (s != "N")
                 cout << "Please enter valid choice" << endl;
-            if (x == 23||x==21)
+            if (x == 23)
                 break;
+            else
+            {
+                saved = true;
+                continue;
+            }
         }
 
         else if (x == 22)
@@ -1008,21 +1026,21 @@ int main()
             {
                 cout << "Please enter the image name to store the new image with (.png, .jpeg, .jpg, .bmp): ";
                 cin >> image_name;
-            }
-            while (true)
-            {
-                try
+                while (true)
                 {
-                    if (image.saveImage(image_name))
+                    try
                     {
-                        image.saveImage(image_name);
-                        break;
+                        if (image.saveImage(image_name))
+                        {
+                            image.saveImage(image_name);
+                            break;
+                        }
                     }
-                }
-                catch (invalid_argument)
-                {
-                    cout << "Please enter a valid extension" << endl;
-                    cin >> image_name;
+                    catch (invalid_argument)
+                    {
+                        cout << "Please enter a valid extension" << endl;
+                        cin >> image_name;
+                    }
                 }
             }
             saved = true;
