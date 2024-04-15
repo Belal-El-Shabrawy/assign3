@@ -1043,7 +1043,6 @@ int main()
                     }
                 }
             }
-            saved = true;
             continue;
         }
         switch (x)
