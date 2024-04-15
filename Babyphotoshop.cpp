@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <random>
 #include <regex>
-
+#include <cmath>
 using namespace std;
 int digit_checker(string value)
 { // to check if the input is digit
@@ -795,32 +795,27 @@ void purple(Image &image)
         }
     }
 }
-void glitch(Image &image)
+void classic(Image &image)
 {
-    const int lineSpacing = 5;   // Spacing between horizontal lines
-    const int lineThickness = 2; // Thickness of the lines
-
-    // Loop to generate horizontal lines
-    for (int i = 0; i < image.height; i += lineSpacing)
+    for (int i = 0; i < image.width; i++)
     {
-        // Draw horizontal lines
-        for (int k = 0; k < lineThickness; k++)
+        for (int j = 0; j < image.height; j++)
         {
-            if (i + k < image.height)
+            unsigned int average = 0;
+            for (int k = 0; k < 3; k++)
             {
-                for (int j = 0; j < image.width; j++)
-                {
-                    // Distort pixel values by shifting horizontally
-                    int shift = rand() % (image.width/5) - (image.width/7);
-                    int newPos = j + shift;
-                    if (newPos >= 0 && newPos < image.width)
-                    {
-                        image(j, i + k, 0) = image(newPos, i + k, 0); // Red channel
-                        image(j, i + k, 1) = image(newPos, i + k, 1); // Green channel
-                        image(j, i + k, 2) = image(newPos, i + k, 2); // Blue channel
-                    }
-                }
+                average += image(i, j, k);
             }
+
+            average /= 3;
+            unsigned int red=0.393 * average + 0.769 * average + 0.189 * average;
+            unsigned int green= 0.349 * average + 0.686 * average + 0.168 * average;
+            unsigned int blue = 0.272 * average + 0.534 * average + 0.131 * average;
+            image(i,j,0)=min(255,(int)red);
+            image(i,j,1)=min(255,(int)green);
+            image(i,j,2)=min(255,(int)blue);
+
+
         }
     }
 }
@@ -1102,7 +1097,7 @@ int main()
             image = skew(image);
             break;
         case 19:
-            glitch(image);
+            classic(image);
             break;
         case 20:
             image = brokenTvEffect(image);
