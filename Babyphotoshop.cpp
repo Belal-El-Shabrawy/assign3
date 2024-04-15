@@ -372,7 +372,7 @@ void frame(Image &image)
     }
     if (choice == 'A')
     {
-        int thickness = 20;
+        int thickness = (image.width)/25;
         for (int i = 0; i < image.width; ++i)
         {
             for (int j = 0; j < thickness; ++j)
@@ -496,7 +496,7 @@ void frame(Image &image)
                 }
             }
         }
-        int thickness = 20;
+        int thickness = (image.width)/25;
         for (int i = 0; i < image.width; ++i)
         {
             for (int j = 0; j < thickness; ++j)
@@ -811,7 +811,7 @@ void glitch(Image &image)
                 for (int j = 0; j < image.width; j++)
                 {
                     // Distort pixel values by shifting horizontally
-                    int shift = rand() % 50 - 20; // Random shift between -3 and 3
+                    int shift = rand() % (image.width/5) - (image.width/7);
                     int newPos = j + shift;
                     if (newPos >= 0 && newPos < image.width)
                     {
