@@ -1,6 +1,6 @@
-// File:  CS112_A3_Part2B_S6_20230096_20230300_20230274.cpp.
+// File:  CS112_A3_Part3_S6_20230096_20230300_20230274.cpp.
 // Purpose: This Program can be used to apply 20 Different filters for any image
-// Author: Belal Alaa Elshabrawy ID: 20230096 Section:S6
+// Author: Belal Alaa El-Shabrawy ID: 20230096 Section:S6
 //         Amr Salah ID: 20230274 Section:S6
 //         Mark Amir ID: 20230300 Section:S6
 // Belal Alaa : Did (GrayScale, Merge, Lighten and Darken, Edge Detect, Sunshine, Skew, BrokenTvFilter)
@@ -21,54 +21,71 @@
 #include <regex>
 #include <cmath>
 using namespace std;
+// Function to check if the input string contains only digits
 int digit_checker(string value)
-{ // to check if the input is digit
+{
+    // Loop until a valid number is entered
     while (true)
     {
-
+        // Iterate through each character in the string
         for (char i : value)
         {
+            // Check if the character is not a digit
             if (!isdigit(i))
             {
                 cout << "Enter number only ";
                 cin >> value;
+                // Recursively call digit_checker with the new input
                 return digit_checker(value);
             }
         }
+        // Convert the string to an integer and return
         return stoi(value);
     }
 }
+
+// Function to quickly resize an image
 Image quickresize(Image image, int wPixel, int hPixel)
 {
     double wScale, hScale;
+    // Create a new image with the specified width and height
     Image nwImg(wPixel, hPixel);
     wScale = (double)(image.width) / wPixel;
     hScale = (double)(image.height) / hPixel;
+    // Loop through each pixel in the new image
     for (int i = 0; i < wPixel; i++)
     {
         for (int j = 0; j < hPixel; j++)
         {
             int w, h;
+            // Calculate the corresponding pixel in the original image
             w = round(wScale * i);
             h = round(hScale * j);
+            // Copy the pixel values from the original image to the new image
             for (int k = 0; k < 3; k++)
                 nwImg(i, j, k) = image(w, h, k);
         }
     }
+    // Return the new image
     return nwImg;
 }
+
+// Function to convert the image to grayscale
 void grayscale(Image &image)
 {
+    // Loop through each pixel in the image
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
             unsigned int average = 0;
+            // Calculate the average value of the RGB channels
             for (int k = 0; k < 3; k++)
             {
                 average += image(i, j, k);
             }
             average /= 3;
+            // Set all RGB channels to the average value
             for (int k = 0; k < 3; k++)
             {
                 image(i, j, k) = average;
@@ -76,15 +93,21 @@ void grayscale(Image &image)
         }
     }
 }
+
+// Function to convert the image to black and white
 void blackAndWhite(Image &image)
 {
+    // Convert the image to grayscale
     grayscale(image);
+    // Loop through each pixel in the image
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
+            // Check if the grayscale value is less than or equal to 127
             if (image(i, j, 0) <= 127)
             {
+                // Set all RGB channels to 0 (black)
                 for (int k = 0; k < 3; k++)
                 {
                     image(i, j, k) = 0;
@@ -92,6 +115,7 @@ void blackAndWhite(Image &image)
             }
             else
             {
+                // Set all RGB channels to 255 (white)
                 for (int k = 0; k < 3; k++)
                 {
                     image(i, j, k) = 255;
@@ -101,13 +125,15 @@ void blackAndWhite(Image &image)
     }
 }
 
+// Function to invert the colors of the image
 void invert(Image &image)
 {
+    // Loop through each pixel in the image
     for (int i = 0; i < image.width; ++i)
     {
         for (int j = 0; j < image.height; ++j)
         {
-            // Set all channels to the average value
+            // Invert each RGB channel By removing the value of pixel from 255
             image(i, j, 0) = 255 - image(i, j, 0);
             image(i, j, 1) = 255 - image(i, j, 1);
             image(i, j, 2) = 255 - image(i, j, 2);
@@ -115,13 +141,14 @@ void invert(Image &image)
     }
 }
 
+// Function to merge two images by averaging their pixel values
 void merge(Image &image)
 {
-    string image_name;
     string image_name2;
     cout << "Please Enter Name of the second Image to merge with the first image: ";
     cin >> image_name2;
     Image image2;
+    // Load the second image
     while (true)
     {
         try
@@ -138,16 +165,17 @@ void merge(Image &image)
             cin >> image_name2;
         }
     }
+    // Resize the second image to match the dimensions of the first image
     image2 = quickresize(image2, image.width, image.height);
+    // Loop through each pixel in the images and average their values
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
             for (int k = 0; k < 3; k++)
             {
-                image(i, j, k) = (image(i, j, k)) / 2;
-                image2(i, j, k) = (image2(i, j, k)) / 2;
-                image(i, j, k) = image(i, j, k) + image2(i, j, k);
+                // Average the pixel values and assign to the first image
+                image(i, j, k) = (image(i, j, k)) / 2 + (image2(i, j, k)) / 2;
             }
         }
     }
@@ -714,13 +742,21 @@ void blur(Image &image, double sigma)
 }
 void sunlight(Image &image)
 {
+    // The amount of sunshine to be added, expressed as a fraction of the difference between the current pixel value and 255.
     double sunshine = 0.25;
+
+    // Loop through each pixel in the image.
     for (int y = 0; y < image.height; ++y)
     {
         for (int x = 0; x < image.width; ++x)
         {
+            // Adjust the red channel of the pixel by increasing it towards 255.
             image(x, y, 0) = floor(image(x, y, 0) + sunshine * (255 - image(x, y, 0)));
+
+            // Adjust the green channel of the pixel by increasing it towards 255 and halving the effect.
             image(x, y, 1) = floor(image(x, y, 1) + sunshine * (255 - image(x, y, 1)) * 0.5);
+
+            // Adjust the blue channel of the pixel by decreasing it towards 0.
             image(x, y, 2) = floor(image(x, y, 2) - sunshine * image(x, y, 2));
         }
     }
@@ -728,10 +764,12 @@ void sunlight(Image &image)
 
 void oilPainting(Image &image)
 {
+    // Loop through each pixel in the image.
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
+            // Divide each color channel value by 30 and then multiply it back by 30, resulting in a simplification of color values.
             for (int k = 0; k < 3; k++)
             {
                 image(i, j, k) /= 30;
@@ -743,12 +781,18 @@ void oilPainting(Image &image)
 
 void infrared(Image &image)
 {
+    // Loop through each pixel in the image.
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
+            // Calculate the average of the green and blue channels.
             int avg = (image(i, j, 1) + image(i, j, 2)) / 2;
+
+            // Calculate the absolute difference between 255 and the average value.
             avg = abs(255 - avg);
+
+            // Set the red channel to 255 and the green and blue channels to the calculated average.
             image(i, j, 0) = 255;
             image(i, j, 1) = avg;
             image(i, j, 2) = avg;
@@ -795,30 +839,7 @@ void purple(Image &image)
         }
     }
 }
-void classic(Image &image)
-{
-    for (int i = 0; i < image.width; i++)
-    {
-        for (int j = 0; j < image.height; j++)
-        {
-            unsigned int average = 0;
-            for (int k = 0; k < 3; k++)
-            {
-                average += image(i, j, k);
-            }
 
-            average /= 3;
-            unsigned int red=0.393 * average + 0.769 * average + 0.189 * average;
-            unsigned int green= 0.349 * average + 0.686 * average + 0.168 * average;
-            unsigned int blue = 0.272 * average + 0.534 * average + 0.131 * average;
-            image(i,j,0)=min(255,(int)red);
-            image(i,j,1)=min(255,(int)green);
-            image(i,j,2)=min(255,(int)blue);
-
-
-        }
-    }
-}
 Image skew(Image image)
 {
     double degree;
@@ -871,28 +892,69 @@ Image skew(Image image)
     return image1;
 }
 
+// Function to simulate a broken TV effect on an image
 Image brokenTvEffect(Image image)
 {
+    // Create a new image with the same dimensions as the input image
     Image image1(image.width, image.height);
+
+    // Loop through each pixel in the image
     for (int x = 0; x < image.width; x++)
     {
         for (int y = 0; y < image.height; y++)
         {
+            // Calculate the index of the current pixel in the image data array
             int index = (y * image.width + x) * 3;
+
+            // Calculate the distance of the current pixel from the center of the image
             int dist = sqrt(pow(x - (image.width / 2), 2) + pow(y - (image.height / 2), 2));
-            // Increase the contrast based on the distance
+
+            // Increase the contrast based on the distance from the center
             int contrast = 1 + dist / 80;
-            // set contrast value to a reasonable range
+
+            // Set contrast value to a reasonable range (between 1 and 5)
             contrast = min(max(contrast, 1), 5);
+
+            // Apply contrast to each color channel of the pixel
             for (int c = 0; c < 3; c++)
             {
                 image1.imageData[index + c] = image.imageData[index + c] * contrast;
             }
         }
     }
+
+    // Return the filtered image
     return image1;
 }
 
+// Function to apply a classic color transformation to an image
+void classic(Image &image)
+{
+    // Loop through each pixel in the image
+    for (int i = 0; i < image.width; i++)
+    {
+        for (int j = 0; j < image.height; j++)
+        {
+            // Calculate the average intensity of the pixel across all color channels
+            unsigned int average = 0;
+            for (int k = 0; k < 3; k++)
+            {
+                average += image(i, j, k);
+            }
+            average /= 3;
+
+            // Apply a classic color transformation using predefined coefficients
+            unsigned int red = 0.393 * average + 0.769 * average + 0.189 * average;
+            unsigned int green = 0.349 * average + 0.686 * average + 0.168 * average;
+            unsigned int blue = 0.272 * average + 0.534 * average + 0.131 * average;
+
+            // Clamp intensity values to the valid range (0 to 255)
+            image(i, j, 0) = min(255, (int)red);
+            image(i, j, 1) = min(255, (int)green);
+            image(i, j, 2) = min(255, (int)blue);
+        }
+    }
+}
 int main()
 {
     string choice;
