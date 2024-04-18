@@ -182,27 +182,36 @@ void merge(Image &image)
 }
 void flip(Image &image)
 {
+    // Display options for flipping
     cout << "A) Flip vertically" << endl;
     cout << "B) Flip horizontally" << endl;
     string choice;
+
+    // Loop until valid input is received
     while (true)
     {
         cin >> choice;
-        choice[0] = toupper(choice[0]);
+        choice[0] = toupper(choice[0]); // Convert input to uppercase
         if (choice == "A" || choice == "B")
-            break;
+            break; // Break out of loop if input is valid
         else
-            cout << "Please enter valid input" << endl;
+            cout << "Please enter valid input" << endl; // Prompt for valid input
     }
+
+    // Flip vertically
     if (choice == "A")
     {
         int temporary;
+        // Iterate through each column
         for (int i = 0; i < image.width; i++)
         {
+            // Iterate through half of the rows
             for (int j = 0; j < image.height / 2; j++)
             {
+                // Iterate through color channels (assuming RGB)
                 for (int k = 0; k < 3; k++)
                 {
+                    // Swap pixels vertically
                     temporary = image(i, j, k);
                     image(i, j, k) = image(i, image.height - j - 1, k);
                     image(i, image.height - j - 1, k) = temporary;
@@ -210,15 +219,21 @@ void flip(Image &image)
             }
         }
     }
+
+        // Flip horizontally
     else if (choice == "B")
     {
         int temporary;
+        // Iterate through half of the columns
         for (int i = 0; i < image.width / 2; i++)
         {
+            // Iterate through each row
             for (int j = 0; j < image.height; j++)
             {
+                // Iterate through color channels (assuming RGB)
                 for (int k = 0; k < 3; k++)
                 {
+                    // Swap pixels horizontally
                     temporary = image(i, j, k);
                     image(i, j, k) = image(image.width - i - 1, j, k);
                     image(image.width - i - 1, j, k) = temporary;
@@ -311,19 +326,22 @@ void rotate(Image &image)
 void darkenAndLighten(Image &image)
 {
     char choice;
+    // Display options for lightening or darkening the image
     cout << "A) Lighten Image\n";
     cout << "B) Darken Image\n";
     cout << "Enter your choice:";
     cin >> choice;
-    choice = toupper(choice);
+    choice = toupper(choice); // Convert input to uppercase
+    // Validate user input
     while (choice != 'A' && choice != 'B')
     {
         cout << "Enter a valid choice ( A , B )\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
         cin >> choice;
-        choice = toupper(choice);
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        choice = toupper(choice); // Convert input to uppercase
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
     }
+    // Lighten the image
     if (choice == 'A')
     {
         for (int i = 0; i < image.width; i++)
@@ -332,13 +350,16 @@ void darkenAndLighten(Image &image)
             {
                 for (int k = 0; k < 3; k++)
                 {
+                    // Increase pixel values by 50%
                     int newValue = static_cast<int>(image.getPixel(i, j, k) * 1.5);
+                    // Clamp values to range [0, 255]
                     newValue = std::max(0, std::min(255, newValue));
-                    image.setPixel(i, j, k, newValue);
+                    image.setPixel(i, j, k, newValue); // Update pixel value
                 }
             }
         }
     }
+        // Darken the image
     else if (choice == 'B')
     {
         for (int i = 0; i < image.width; i++)
@@ -347,27 +368,34 @@ void darkenAndLighten(Image &image)
             {
                 for (int k = 0; k < 3; k++)
                 {
+                    // Decrease pixel values by 50%
                     int newValue = static_cast<int>(image.getPixel(i, j, k) * 0.5);
+                    // Clamp values to range [0, 255]
                     newValue = std::max(0, std::min(255, newValue));
-                    image.setPixel(i, j, k, newValue);
+                    image.setPixel(i, j, k, newValue); // Update pixel value
                 }
             }
         }
     }
 }
+
 void crop(Image &image)
 {
     int x, y, w, h;
+    // Prompt user to enter coordinates for cropping
     cout << "Please enter upper left corner pixel coordinate(first pixel is zero), width and height respectively: ";
     cin >> x >> y >> w >> h;
+    // Validate user input for cropping
     while ((x < 0 || x > image.width) || (y < 0 || y > image.height) || (w <= 0 || w > (image.width - w)) || (h <= 0 || h > (image.height - h)))
     {
         cout << "Please enter valid number" << endl;
         cout << "Please enter upper left corner pixel coordinate(first pixel is zero), width and height respectively: ";
         cin >> x >> y >> w >> h;
     }
+    // Create a new image for cropped region
     Image nwImg = image;
     nwImg = Image(w, h);
+    // Copy pixels from original image to new image for cropping
     for (int i = 0, ii = x; i < w; i++, ii++)
     {
         for (int j = 0, jj = y; j < h; j++, jj++)
@@ -378,70 +406,78 @@ void crop(Image &image)
             }
         }
     }
+    // Update original image with cropped region
     image = nwImg;
 }
 
 void frame(Image &image)
 {
     char choice;
-
+    // Display options for frame style
     cout << "A) Default Frame\n";
     cout << "B) Fancy  frame\n";
     cout << "Enter your choice:";
     cin >> choice;
-    choice = toupper(choice);
+    choice = toupper(choice); // Convert input to uppercase
+    // Validate user input
     while (choice != 'A' && choice != 'B')
     {
         cout << "Enter a valid choice ( A , B )\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
         cin >> choice;
-        choice = toupper(choice);
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        choice = toupper(choice); // Convert input to uppercase
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
     }
+    // Create default frame
     if (choice == 'A')
     {
-        int thickness = (image.width)/25;
+        int thickness = (image.width)/25; // Calculate frame thickness
+        // Top border
         for (int i = 0; i < image.width; ++i)
         {
             for (int j = 0; j < thickness; ++j)
             {
-                // Initialize average value
+                // Set color for top border
                 image(i, j, 0) = 2;
                 image(i, j, 1) = 2;
                 image(i, j, 2) = 232;
             }
         }
+        // Left border
         for (int i = 0; i < thickness; ++i)
         {
             for (int j = 0; j < image.height; ++j)
             {
-                // Initialize average value
+                // Set color for left border
                 image(i, j, 0) = 2;
                 image(i, j, 1) = 2;
                 image(i, j, 2) = 232;
             }
         }
-        for (int i = image.width; i > image.width - thickness; i--)
+        // Right border
+        for (int i = image.width - 1; i > image.width - thickness; i--)
         {
             for (int j = 0; j < image.height; j++)
             {
-                // Initialize average value
+                // Set color for right border
                 image(i, j, 0) = 2;
                 image(i, j, 1) = 2;
                 image(i, j, 2) = 232;
             }
         }
+        // Bottom border
         for (int j = image.height - 1; j > image.height - thickness; j--)
         {
             for (int i = 0; i < image.width; i++)
             {
-                // Initialize average value
+                // Set color for bottom border
                 image(i, j, 0) = 2;
                 image(i, j, 1) = 2;
                 image(i, j, 2) = 232;
             }
         }
     }
+        // Create fancy frame
     else
     {
         int red;
@@ -449,19 +485,22 @@ void frame(Image &image)
         int blue;
         string test;
 
+        // Display options for color selection
         cout << "A) Default color\n";
         cout << "B) Custom color\n";
         cout << "Enter your choice:";
         cin >> choice;
-        choice = toupper(choice);
+        choice = toupper(choice); // Convert input to uppercase
+        // Validate user input for color selection
         while (choice != 'A' && choice != 'B')
         {
             cout << "Enter a valid choice ( A , B )\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
             cin >> choice;
-            choice = toupper(choice);
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            choice = toupper(choice); // Convert input to uppercase
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
         }
+        // Set default color or prompt for custom color
         if (choice == 'A')
         {
             red = 2;
@@ -470,6 +509,7 @@ void frame(Image &image)
         }
         else
         {
+            // Prompt for custom color values
             cout << "Enter red value ";
             cin >> test;
             red = digit_checker(test);
@@ -479,6 +519,7 @@ void frame(Image &image)
             cout << "Enter blue value ";
             cin >> test;
             blue = digit_checker(test);
+            // Validate custom color values
             while (true)
             {
                 bool condition1 = false;
@@ -514,6 +555,7 @@ void frame(Image &image)
                 {
                     condition3 = true;
                 }
+                // Check if all conditions are met
                 if (!condition1 || !condition2 || !condition3)
                 {
                     continue;
@@ -524,47 +566,64 @@ void frame(Image &image)
                 }
             }
         }
+        // Calculate frame thickness
         int thickness = (image.width)/25;
+        // Top border
         for (int i = 0; i < image.width; ++i)
         {
             for (int j = 0; j < thickness; ++j)
             {
-                // Initialize average value
+                // Set color for top border
                 image(i, j, 0) = red;
                 image(i, j, 1) = green;
                 image(i, j, 2) = blue;
             }
         }
+        // Inner horizontal lines
         for (int i = thickness + 10; i < image.width - (thickness + 10); ++i)
         {
             for (int j = (thickness + 5); j < (thickness + 5) + 5; ++j)
             {
-                // Initialize average value
+                // Set color for inner horizontal lines
                 image(i, j, 0) = 255;
                 image(i, j, 1) = 255;
                 image(i, j, 2) = 255;
             }
         }
+        // Left border
         for (int i = 0; i < thickness; ++i)
         {
             for (int j = 0; j < image.height; ++j)
             {
-                // Initialize average value
+                // Set color for left border
                 image(i, j, 0) = red;
                 image(i, j, 1) = green;
                 image(i, j, 2) = blue;
             }
         }
+        // Inner vertical lines
         for (int i = thickness + 10; i < thickness + 15; ++i)
         {
             for (int j = thickness + 10; j < image.height - (thickness + 10); ++j)
             {
-                // Initialize average value
+                // Set color for inner vertical lines
                 image(i, j, 0) = 255;
                 image(i, j, 1) = 255;
                 image(i, j, 2) = 255;
             }
         }
+        // Inner vertical lines
+        for (int i = image.width - thickness - 1; i < image.width - (thickness + 10); ++i)
+        {
+            for (int j = thickness + 10; j < image.height - (thickness + 10); ++j)
+            {
+                // Set color for right border
+                image(i, j, 0) = 255;
+                image(i, j, 1) = 255;
+                image(i, j, 2) = 255;
+            }
+        }
+        // Right Border
         for (int i = image.width; i > image.width - thickness; i--)
         {
             for (int j = 0; j < image.height; j++)
@@ -575,34 +634,37 @@ void frame(Image &image)
                 image(i, j, 2) = blue;
             }
         }
-        for (int i = thickness + 10; i < image.width - (thickness + 10); ++i)
-        {
-            for (int j = image.height - (thickness + 10); j > (image.height - (thickness + 10)) - 5; j--)
-            {
-                // Initialize average value
-                image(i, j, 0) = 255;
-                image(i, j, 1) = 255;
-                image(i, j, 2) = 255;
-            }
-        }
-        for (int i = image.width - thickness - 11; i > (image.width - thickness - 10) - 5; i--)
-        {
-            for (int j = thickness + 10; j < image.height - (thickness + 10); ++j)
-            {
-                // Initialize average value
-                image(i, j, 0) = 255;
-                image(i, j, 1) = 255;
-                image(i, j, 2) = 255;
-            }
-        }
+        // Bottom border
         for (int j = image.height - 1; j > image.height - thickness; j--)
         {
             for (int i = 0; i < image.width; i++)
             {
-                // Initialize average value
+                // Set color for bottom border
                 image(i, j, 0) = red;
                 image(i, j, 1) = green;
                 image(i, j, 2) = blue;
+            }
+        }
+        // Inner horizontal lines
+        for (int i = thickness + 10; i < image.width - (thickness + 10); ++i)
+        {
+            for (int j = image.height - (thickness + 10); j > (image.height - (thickness + 10)) - 5; j--)
+            {
+                // Set color for inner horizontal lines
+                image(i, j, 0) = 255;
+                image(i, j, 1) = 255;
+                image(i, j, 2) = 255;
+            }
+        }
+        // Inner vertical lines
+        for (int i = image.width - thickness - 11; i > (image.width - thickness - 10) - 5; i--)
+        {
+            for (int j = thickness + 10; j < image.height - (thickness + 10); ++j)
+            {
+                // Set color for inner vertical lines
+                image(i, j, 0) = 255;
+                image(i, j, 1) = 255;
+                image(i, j, 2) = 255;
             }
         }
     }
@@ -610,14 +672,18 @@ void frame(Image &image)
 
 void imageEdges(Image &image, string &image_name)
 {
+    // Load another instance of the image for processing
     Image image1(image_name);
+    // Sobel edge detection kernels for X and Y directions
     int kernelX[3][3] = {{-1, 0, 1}, {-1, 0, 1}, {-1, 0, 1}};
     int kernelY[3][3] = {{-1, -1, -1}, {0, 0, 0}, {1, 1, 1}};
+    // Iterate over the image pixels
     for (int i = 1; i < image.width - 1; i++)
     {
         for (int j = 1; j < image.height - 1; j++)
         {
             int gx = 0, gy = 0;
+            // Apply Sobel kernels to calculate gradients
             for (int ky = 0; ky < 3; ky++)
             {
                 for (int kx = 0; kx < 3; kx++)
@@ -625,80 +691,99 @@ void imageEdges(Image &image, string &image_name)
                     gx += kernelX[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
                     gy += kernelY[ky][kx] * (image1(i + kx - 1, j + ky - 1, 0) + image1(i + kx - 1, j + ky - 1, 1) + image1(i + kx - 1, j + ky - 1, 2));
                 }
-                int magnitude = std::sqrt(gx * gx + gy * gy);
-                if (magnitude > 200)
+            }
+            // Calculate gradient magnitude
+            int magnitude = std::sqrt(gx * gx + gy * gy);
+            // Threshold the magnitude to detect edges
+            if (magnitude > 200)
+            {
+                // Set pixel to black (edge)
+                for (int k = 0; k < 3; k++)
                 {
-                    for (int k = 0; k < 3; k++)
-                    {
-                        image(i, j, k) = 0;
-                    }
+                    image(i, j, k) = 0;
                 }
-                else
+            }
+            else
+            {
+                // Set pixel to white (non-edge)
+                for (int k = 0; k < 3; k++)
                 {
-                    for (int k = 0; k < 3; k++)
-                    {
-                        image(i, j, k) = 255;
-                    }
+                    image(i, j, k) = 255;
                 }
             }
         }
     }
 }
+
 Image resize(Image image)
 {
     double wScale, hScale;
     int wPixel = image.width, hPixel = image.height;
     string choice;
+    // Prompt user for scaling method
     cout << "Do you want to scale using:\nA) Pixels\nB) Percentage\n";
     cin >> choice;
-    choice[0] = toupper(choice[0]);
+    choice[0] = toupper(choice[0]); // Convert input to uppercase
+    // Validate user input for scaling method
     while (choice != "A" && choice != "B")
     {
         cout << "Please enter valid choice" << endl;
         cin >> choice;
-        choice[0] = toupper(choice[0]);
+        choice[0] = toupper(choice[0]); // Convert input to uppercase
     }
+    // Scale image based on user choice
     if (choice == "A")
     {
+        // Prompt user for desired width and height
         cout << "Enter width, height respectively: ";
         cin >> wPixel >> hPixel;
     }
     else if (choice == "B")
     {
+        // Prompt user for percentage scaling
         cout << "Enter percentage: ";
         double percentage;
         cin >> percentage;
+        // Calculate scaling factors
         wScale = percentage / 100.0;
         hScale = percentage / 100.0;
+        // Calculate new width and height based on percentage scaling
         wPixel = image.width * wScale;
         hPixel = image.height * hScale;
     }
+    // Create a new image with the specified dimensions
     Image nwImg(wPixel, hPixel);
+    // Calculate scaling factors
     wScale = (double)(image.width) / wPixel;
     hScale = (double)(image.height) / hPixel;
+    // Iterate over pixels in the new image
     for (int i = 0; i < wPixel; i++)
     {
         for (int j = 0; j < hPixel; j++)
         {
             int w, h;
+            // Map new coordinates to original image coordinates
             w = round(wScale * i);
             h = round(hScale * j);
+            // Copy pixel values from original image to new image
             for (int k = 0; k < 3; k++)
                 nwImg(i, j, k) = image(w, h, k);
         }
     }
-    return nwImg;
+    return nwImg; // Return the resized image
 }
 
 void blur(Image &image, double sigma)
 {
-
+    // Retrieve image dimensions
     int width = image.width;
     int height = image.height;
     string rr;
     int number;
+    // Prompt user for blur radius
     cout << "Enter the blur radius ";
     cin >> rr;
+    // Validate user input for blur radius
     number = digit_checker(rr);
     while (number > 8 || number < 1)
     {
@@ -706,13 +791,16 @@ void blur(Image &image, double sigma)
         cin >> number;
     }
 
+    // Apply blur operation 'number' times
     for (int o = 0; o < number; o++)
     {
+        // Iterate over image pixels
         for (int i = 1; i < width - 1; ++i)
         {
             for (int j = 1; j < height - 1; ++j)
             {
                 unsigned int total_red = 0, total_green = 0, total_blue = 0;
+                // Compute the sum of colors in the 3x3 neighborhood
                 for (int k = -1; k <= 1; ++k)
                 {
                     for (int l = -1; l <= 1; ++l)
@@ -831,10 +919,12 @@ void television(Image &image)
 }
 void purple(Image &image)
 {
+    // Iterate over each pixel in the image
     for (int i = 0; i < image.width; i++)
     {
         for (int j = 0; j < image.height; j++)
         {
+            // Reduce the green channel intensity by 30% to achieve a purple hue
             image(i, j, 1) = .7 * image(i, j, 1);
         }
     }
@@ -842,10 +932,13 @@ void purple(Image &image)
 
 Image skew(Image image)
 {
+    // Prompt user to enter an angle in degrees
     double degree;
-    cout << "Enter a degree: ";
+    cout << "Enter an angle in degrees: ";
     cin >> degree;
+    // Convert the angle from degrees to radians
     degree = (22 * degree) / (7 * 180);
+    // Validate the input angle to ensure it's not 90 or 270 degrees, which would cause undefined behavior
     while (true)
     {
         bool valid = true;
@@ -855,40 +948,52 @@ Image skew(Image image)
         }
         if (valid)
             break;
-        cout << "Invalid input\n";
+        cout << "Invalid input. Please enter an angle other than 90 or 270 degrees.\n";
         cout << "Enter an angle: ";
         cin >> degree;
     }
+    // Retrieve the width and height of the original image
     int width = image.width;
     int height = image.height;
-    double l = height * tan(degree);      // Calculate the skewing length based on height
-    int newWidth = width + int(l);        // New width after skewing
-    int x_shift = (newWidth - width) / 2; // Calculate the shift for the new width to maintain centering
-    Image image1(newWidth, height);       // Create new image with adjusted width
+    // Calculate the length of skewing based on the input angle and image height
+    double l = height * tan(degree);
+    // Calculate the new width after skewing
+    int newWidth = width + int(l);
+    // Calculate the shift needed to maintain centering in the new width
+    int x_shift = (newWidth - width) / 2;
+    // Create a new image with the adjusted width
+    Image image1(newWidth, height);
+    // Initialize the new image with white pixels
     for (int i = 0; i < newWidth; i++)
     {
         for (int j = 0; j < height; j++)
         {
             for (int k = 0; k < 3; k++)
             {
-                image1(i, j, k) = 255; // Initialize the new image with white pixels
+                image1(i, j, k) = 255;
             }
         }
     }
+    // Skew the original image and copy pixel values to the new image
     for (int i = 0; i < newWidth; i++)
     {
         for (int j = 0; j < height; j++)
         {
             for (int k = 0; k < 3; k++)
             {
-                int originalX = i - x_shift - int(l) / 2 + int(l) * j / height; // Calculate original x-coordinate
+                // Calculate the original x-coordinate based on skewing
+                int originalX = i - x_shift - int(l) / 2 + int(l) * j / height;
+
+                // Check if the original x-coordinate is within bounds
                 if (originalX >= 0 && originalX < width)
-                {                                             // Check if original x-coordinate is within bounds
-                    image1(i, j, k) = image(originalX, j, k); // Copy pixel values from original image to temporary image
+                {
+                    // Copy pixel values from the original image to the temporary image
+                    image1(i, j, k) = image(originalX, j, k);
                 }
             }
         }
     }
+    // Return the new skewed image
     return image1;
 }
 
@@ -1006,7 +1111,7 @@ int main()
         cout << "Filter 16: Purple Effect\n";
         cout << "Filter 17: Infrared Effect\n";
         cout << "Filter 18: Skewing Filter\n";
-        cout << "Filter 19: Glitch effect\n";
+        cout << "Filter 19: Classic effect\n";
         cout << "Filter 20: Broken Tv Effect\n";
 
         cout << "\n21: Load new Image\n";
