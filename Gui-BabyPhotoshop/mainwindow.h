@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "customwidget.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -73,7 +73,30 @@ private slots:
     void on_pushButton_14_clicked();
 
     void visibilty();
+    void on_pushButton_9_clicked();
+
+    void on_pushButton_21_clicked();
+
+    void on_pushButton_26_clicked();
+
+    void cropImage();
+    void onStartPointChanged(const QPoint &point);
+    void onEndPointChanged(const QPoint &point);
+
+    // void onCaptureButtonClicked();
+    void disableSelection();
+
+
+    void on_pushButton_26_clicked(bool checked);
+
+    void on_pushButton_28_clicked();
+
+    void on_pushButton_29_clicked();
+
+    void on_pushButton_30_clicked();
+
 private:
     Ui::MainWindow *ui;
+    CustomWidget *customWidget;
 };
 #endif // MAINWINDOW_H

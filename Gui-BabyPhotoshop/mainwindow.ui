@@ -672,7 +672,7 @@ background-color: #C5001A;}</string>
      <rect>
       <x>30</x>
       <y>630</y>
-      <width>81</width>
+      <width>76</width>
       <height>41</height>
      </rect>
     </property>
@@ -711,9 +711,9 @@ Vertically</string>
    <widget class="QPushButton" name="pushButton_23">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>105</x>
       <y>630</y>
-      <width>71</width>
+      <width>76</width>
       <height>41</height>
      </rect>
     </property>
@@ -816,9 +816,9 @@ border-radius: 7;}</string>
    <widget class="QPushButton" name="pushButton_24">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>265</x>
       <y>630</y>
-      <width>71</width>
+      <width>76</width>
       <height>41</height>
      </rect>
     </property>
@@ -855,7 +855,7 @@ background-color: #C5001A;}</string>
      <rect>
       <x>190</x>
       <y>630</y>
-      <width>81</width>
+      <width>76</width>
       <height>41</height>
      </rect>
     </property>
@@ -1158,6 +1158,291 @@ border-radius: 25px;</string>
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_9">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>690</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <fontweight>Medium</fontweight>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #EF4765, stop:1 #FF9A5A);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    font: 16px &quot;Segoe UI&quot;;
+    font-weight: 500;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    min-height: 40px; /* Adjust height as needed */
+}
+
+QPushButton:disabled {
+    background-color: #CCCCCC;
+    color: #888888;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: none;
+    border-image: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5)) 1 1;
+}
+
+QPushButton:hover:!pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5));
+}</string>
+    </property>
+    <property name="text">
+     <string>More Tools</string>
+    </property>
+   </widget>
+   <widget class="CustomWidget" name="label_importedpic_4">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>130</y>
+      <width>541</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #2A3132; border-radius: 10px;
+
+font: 12pt &quot;Oswald&quot;;
+color: #FDF6F6;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_21">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>150</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <fontweight>Medium</fontweight>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #EF4765, stop:1 #FF9A5A);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    font: 16px &quot;Segoe UI&quot;;
+    font-weight: 500;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    min-height: 40px; /* Adjust height as needed */
+}
+
+QPushButton:disabled {
+    background-color: #CCCCCC;
+    color: #888888;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: none;
+    border-image: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5)) 1 1;
+}
+
+QPushButton:hover:!pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5));
+}</string>
+    </property>
+    <property name="text">
+     <string>Filters</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_26">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>270</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <fontweight>Medium</fontweight>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #EF4765, stop:1 #FF9A5A);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    font: 16px &quot;Segoe UI&quot;;
+    font-weight: 500;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    min-height: 40px; /* Adjust height as needed */
+}
+
+QPushButton:disabled {
+    background-color: #CCCCCC;
+    color: #888888;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: none;
+    border-image: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5)) 1 1;
+}
+
+QPushButton:hover:!pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5));
+}</string>
+    </property>
+    <property name="text">
+     <string>Crop</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_27">
+    <property name="geometry">
+     <rect>
+      <x>707</x>
+      <y>220</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+font: 10pt &quot;Oswald&quot;;
+color: #002C54;
+border: 3px solid #002C54;}
+QPushButton:hover:!pressed{
+color: #FDF6F6;
+background-color: #002C54;}</string>
+    </property>
+    <property name="text">
+     <string>Image 1</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_28">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>210</y>
+      <width>151</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #EF4765, stop:1 #FF9A5A);
+    border: 0;
+    border-radius: 12px;
+    color: #FFFFFF;
+    font: 16px &quot;Segoe UI&quot;;
+    font-weight: 500;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    min-height: 40px; /* Adjust height as needed */
+}
+
+QPushButton:disabled {
+    background-color: #CCCCCC;
+    color: #888888;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: none;
+    border-image: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5)) 1 1;
+}
+
+QPushButton:hover:!pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(239, 71, 101, 0.5), stop:1 rgba(255, 154, 90, 0.5));
+}</string>
+    </property>
+    <property name="text">
+     <string>select</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_29">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>26</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+font: 14pt &quot;Oswald&quot;;
+color: #C5001A;
+border: 3px solid #C5001A;
+background-color: #FDF6F6;}
+QPushButton:hover:!pressed{
+font: 14pt &quot;Oswald&quot;;
+color: #FDF6F6;
+background-color: #C5001A;}</string>
+    </property>
+    <property name="text">
+     <string>reset</string>
+    </property>
+   </widget>
+   <zorder>pushButton_27</zorder>
    <zorder>label_background</zorder>
    <zorder>label</zorder>
    <zorder>pushButton</zorder>
@@ -1195,8 +1480,21 @@ border-radius: 25px;</string>
    <zorder>label_6</zorder>
    <zorder>widget</zorder>
    <zorder>label_7</zorder>
+   <zorder>pushButton_9</zorder>
+   <zorder>label_importedpic_4</zorder>
+   <zorder>pushButton_21</zorder>
+   <zorder>pushButton_26</zorder>
+   <zorder>pushButton_28</zorder>
+   <zorder>pushButton_29</zorder>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomWidget</class>
+   <extends>QLabel</extends>
+   <header location="global">customwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <slots>

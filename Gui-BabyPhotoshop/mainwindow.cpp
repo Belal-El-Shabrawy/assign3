@@ -20,13 +20,19 @@
 #include <QCursor>
 #include <QMouseEvent>
 #include <QStyleFactory>
+#include <QPainter>
+
 
 using namespace std;
-std::string stringname,stringname2,stringname3;
+bool capturingEnabled=false;
+QPoint startPoint;
+QPoint endPoint;
+std::string stringname,stringname2,stringname3,stringname4;
 bool condition = true;
 bool condition2=false;
 bool condition3=true;
 Image image;
+QImage image1;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -34,8 +40,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(1125, 760);
     ui->label_importedpic_3->setVisible(false);
+    ui->label_importedpic_4->setVisible(false);
+    ui->pushButton_28->setVisible(false);
+    ui->pushButton_21->setVisible(false);
     ui->pushButton_8->setVisible(false);
     ui->pushButton_19->setVisible(false);
+    ui->pushButton_26->setVisible(false);
     connect(ui->horizontalSlider, &QSlider::valueChanged, this, &MainWindow::on_horizontalSlider_valueChanged);
     ui->horizontalSlider->setValue(50);
     ui->bright->parentWidget()->setVisible(false);
@@ -48,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     painter.drawRoundedRect(mask.rect(), 10, 10);
     ui->label_importedpic->setMask(mask);
     ui->label_importedpic_2->setMask(mask);
+    ui->label_importedpic_4->setMouseTracking(true);
 
     if(stringname2.empty()){
         condition=true;
@@ -55,11 +66,39 @@ MainWindow::MainWindow(QWidget *parent)
     else{
         condition=false;
     }
+    customWidget = ui->label_importedpic_4;
+    // Initially, capturing is disabled
+
+
+    // Connect CustomWidget's signals to slots in MainWindow
+    connect(customWidget, &CustomWidget::startPointChanged, this, &MainWindow::onStartPointChanged);
+    connect(customWidget, &CustomWidget::endPointChanged, this, &MainWindow::onEndPointChanged);
+    customWidget->setEnableSelection(false);
+
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::onStartPointChanged(const QPoint &point)
+{
+    if (capturingEnabled){
+        startPoint= point;
+
+
+    }
+    qDebug()<<startPoint;
+
+}
+void MainWindow::onEndPointChanged(const QPoint &point)
+{
+    if (capturingEnabled){
+        endPoint= point;
+    }
+    qDebug()<<endPoint;
+
+}
+
 
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -68,6 +107,7 @@ void MainWindow::on_pushButton_2_clicked()
         stringname = fileName.toStdString();
         // Check if a file was selected
         if (!fileName.isEmpty()) {
+            stringname4 = stringname;
             stringname2 = stringname;
             // Load the image
             QPixmap image(fileName);
@@ -78,6 +118,8 @@ void MainWindow::on_pushButton_2_clicked()
             }
             ui->label_importedpic->setScaledContents(true);
             ui->label_importedpic->setPixmap(image);
+            ui->label_importedpic_4->setScaledContents(true);
+            ui->label_importedpic_4->setPixmap(image);
             image.save("Rotated.png");
             ui->label_importedpic_2->setPixmap(QPixmap());
         }
@@ -95,6 +137,9 @@ void MainWindow::on_pushButton_2_clicked()
         }
 
     }
+
+
+
 void MainWindow::on_pushButton_clicked()
 {
     if(!condition){
@@ -628,6 +673,8 @@ void MainWindow::on_pushButton_7_clicked()
                 image.loadNewImage("Filtered.png");
 
                 QPixmap editedImage("Filteredimage.png");
+                ui->label_importedpic_4->setScaledContents(true);
+                ui->label_importedpic_4->setPixmap(editedImage);
                 ui->label_importedpic->setScaledContents(true);
                 ui->label_importedpic->setPixmap(editedImage);
             }
@@ -635,6 +682,8 @@ void MainWindow::on_pushButton_7_clicked()
                 QPixmap editedImage("Rotated.png");
                 ui->label_importedpic->setScaledContents(true);
                 ui->label_importedpic->setPixmap(editedImage);
+                ui->label_importedpic_4->setScaledContents(true);
+                ui->label_importedpic_4->setPixmap(editedImage);
                 condition2=false;
             }
         }
@@ -680,7 +729,8 @@ void MainWindow::on_pushButton_20_clicked()
                 }
             }
         }
-        image1.saveImage("Filtered.png");
+        image = image1;
+        image.saveImage("Filtered.png");
         QPixmap editedImage("Filtered.png");
         ui->label_importedpic_2->setScaledContents(true);
         ui->label_importedpic_2->setPixmap(editedImage);
@@ -828,7 +878,6 @@ void MainWindow::on_pushButton_14_clicked()
     ui->label_importedpic_2->setScaledContents(true);
     ui->label_importedpic_2->setPixmap(editedImage);
 }
-
 }
 
 void MainWindow::visibilty()
@@ -867,6 +916,147 @@ void MainWindow::on_pushButton_15_clicked()
     ui->label_importedpic_2->setScaledContents(true);
     ui->label_importedpic_2->setPixmap(editedImage);
 }
+}
+
+
+
+void MainWindow::on_pushButton_9_clicked()
+{
+    ui->pushButton_8->setVisible(false);
+    ui->pushButton->setVisible(false);
+    ui->Rotate->setVisible(false);
+    ui->pushButton_19->setVisible(false);
+    ui->pushButton_10->setVisible(false);
+    ui->pushButton_11->setVisible(false);
+    ui->pushButton_12->setVisible(false);
+    ui->pushButton_13->setVisible(false);
+    ui->pushButton_14->setVisible(false);
+    ui->pushButton_15->setVisible(false);
+    ui->pushButton_16->setVisible(false);
+    ui->pushButton_17->setVisible(false);
+    ui->pushButton_18->setVisible(false);
+    ui->pushButton_20->setVisible(false);
+    ui->pushButton_22->setVisible(false);
+    ui->pushButton_23->setVisible(false);
+    ui->pushButton_24->setVisible(false);
+    ui->pushButton_25->setVisible(false);
+    ui->pushButton_2->setVisible(false);
+    ui->pushButton_3->setVisible(false);
+    ui->pushButton_4->setVisible(false);
+    ui->pushButton_5->setVisible(false);
+    ui->pushButton_6->setVisible(false);
+    ui->pushButton_7->setVisible(false);
+    ui->pushButton_8->setVisible(false);
+    ui->pushButton_9->setVisible(false);
+    ui->pushButton_21->setVisible(true);
+    ui->pushButton_26->setVisible(true);
+    ui->label_importedpic_3->setVisible(false);
+    ui->label_importedpic_2->setVisible(false);
+    ui->label_importedpic->setVisible(false);
+    ui->bright->parentWidget()->setVisible(false);
+    ui->label_6->setVisible(false);
+    ui->label_importedpic_4->setVisible(true);
+    ui->pushButton_28->setVisible(true);
+}
+
+
+void MainWindow::on_pushButton_21_clicked()
+{
+    ui->pushButton->setVisible(true);
+    ui->Rotate->setVisible(true);
+    ui->pushButton_26->setVisible(false);
+    ui->pushButton_10->setVisible(true);
+    ui->pushButton_11->setVisible(true);
+    ui->pushButton_12->setVisible(true);
+    ui->pushButton_13->setVisible(true);
+    ui->pushButton_14->setVisible(true);
+    ui->pushButton_15->setVisible(true);
+    ui->pushButton_16->setVisible(true);
+    ui->pushButton_17->setVisible(true);
+    ui->pushButton_18->setVisible(true);
+    ui->pushButton_20->setVisible(true);
+    ui->pushButton_22->setVisible(true);
+    ui->pushButton_23->setVisible(true);
+    ui->pushButton_24->setVisible(true);
+    ui->pushButton_25->setVisible(true);
+    ui->pushButton_2->setVisible(true);
+    ui->pushButton_3->setVisible(true);
+    ui->pushButton_4->setVisible(true);
+    ui->pushButton_5->setVisible(true);
+    ui->pushButton_6->setVisible(true);
+    ui->pushButton_7->setVisible(true);
+    ui->pushButton_9->setVisible(true);
+    ui->pushButton_21->setVisible(false);
+    ui->label_importedpic_2->setVisible(true);
+    ui->label_importedpic->setVisible(true);
+    ui->label_importedpic_4->setVisible(false);
+    ui->pushButton_28->setVisible(false);
+}
+
+
+void MainWindow::on_pushButton_26_clicked()
+{
+
+    if(!condition && startPoint.x()!=0 &&startPoint.y()!=0 ){
+        image.loadNewImage(stringname);
+        int snewx=((double)startPoint.x()/540)*image.width;
+        int snewy=((double)startPoint.y()/500)*image.height;
+        int enewx=((double)endPoint.x()/540)*image.width;
+        int enewy=((double)endPoint.y()/500)*image.height;
+        int x = std::min(snewx, enewx);
+        int y = std::min(snewy, enewy);
+        int w = std::abs(enewx - snewx);
+        int h = std::abs(enewy - snewy);
+
+        qDebug()<<startPoint;
+        Image nwImg = image;
+        nwImg = Image(w, h);
+        for (int i = 0, ii = x; i < w; i++, ii++)
+        {
+            for (int j = 0, jj = y; j < h; j++, jj++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    nwImg(i, j, k) = image(ii, jj, k);
+                }
+            }
+        }
+        image = nwImg;
+        image.saveImage("Filteredimage.png");
+        stringname="Filteredimage.png";
+        QPixmap editedImage("Filteredimage.png");
+        ui->label_importedpic_4->setScaledContents(true);
+        ui->label_importedpic_4->setPixmap(editedImage);
+        ui->label_importedpic->setScaledContents(true);
+        ui->label_importedpic->setPixmap(editedImage);
+    }
+}
+
+
+
+
+
+
+    void MainWindow::on_pushButton_28_clicked()
+    {
+        if(!condition){
+        QMessageBox::warning(this, "Note", "You Should Click and Drag on the Image to Select a Part Then Press \"Crop\" to Crop!");
+        capturingEnabled = !capturingEnabled;
+        customWidget->setEnableSelection(capturingEnabled);
+        }
+    }
+
+
+void MainWindow::on_pushButton_29_clicked()
+{
+    if(!condition){
+    stringname = stringname4;
+    QPixmap editedImage(QString::fromStdString(stringname4));
+    ui->label_importedpic_4->setScaledContents(true);
+    ui->label_importedpic_4->setPixmap(editedImage);
+    ui->label_importedpic->setScaledContents(true);
+    ui->label_importedpic->setPixmap(editedImage);
+    }
 }
 
 
