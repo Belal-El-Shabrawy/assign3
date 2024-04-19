@@ -79,21 +79,13 @@ private slots:
 
     void on_pushButton_26_clicked();
 
-    void cropImage();
     void onStartPointChanged(const QPoint &point);
     void onEndPointChanged(const QPoint &point);
 
-    // void onCaptureButtonClicked();
-    void disableSelection();
-
-
-    void on_pushButton_26_clicked(bool checked);
 
     void on_pushButton_28_clicked();
 
     void on_pushButton_29_clicked();
-
-    void on_pushButton_30_clicked();
 
 private:
     Ui::MainWindow *ui;
